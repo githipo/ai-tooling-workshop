@@ -5,31 +5,210 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kundencockpit</title>
 <style>
-  /* Bewusst schlicht gehalten – Design und KI-Knöpfe entstehen im Workshop per Prompt. */
-  body { font-family: Arial, sans-serif; margin: 0; }
+  /* ---------- Farben (warme Töne) ---------- */
+  :root {
+    --hintergrund: #fbf7f2;
+    --flaeche: #ffffff;
+    --rand: #eadfd2;
+    --text: #3b2f28;
+    --text-leise: #8a7a6d;
+    --akzent: #e0702b;        /* Orange – Hauptknöpfe */
+    --akzent-dunkel: #b9551a;
+    --akzent-hell: #fdeee2;
+    --gold: #e9a23b;
+    --rot: #c8452f;
+    --gruen: #5e8c4a;
+    --klasse-a: #c8452f;
+    --klasse-b: #e0902b;
+    --klasse-c: #b8a07e;
+  }
+
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: var(--hintergrund); color: var(--text); }
   [hidden] { display: none !important; } /* sorgt dafür, dass "hidden" immer versteckt */
-  header { padding: 10px 16px; border-bottom: 1px solid #ccc; }
-  header h1 { font-size: 20px; margin: 0; }
-  .ansicht { display: flex; }
-  aside { width: 260px; border-right: 1px solid #ccc; padding: 10px; }
-  aside li { cursor: pointer; padding: 4px 0; }
-  main { flex: 1; padding: 10px 16px; }
-  pre { white-space: pre-wrap; background: #f4f4f4; padding: 8px; }
-  .fehler { color: #b00020; }
+
+  header {
+    padding: 14px 24px;
+    background: linear-gradient(90deg, #b9551a, #e0702b 60%, #e9a23b);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(120, 60, 20, .25);
+  }
+  header h1 { font-size: 22px; margin: 0; letter-spacing: .5px; }
+  header p { margin: 2px 0 0; font-size: 13px; opacity: .9; }
+
+  .ansicht { display: flex; min-height: calc(100vh - 64px); }
+
+  /* ---------- Knöpfe ---------- */
+  button {
+    font: inherit; cursor: pointer; border: none; border-radius: 8px;
+    padding: 8px 14px; background: var(--akzent); color: #fff; font-weight: 600;
+    transition: background .15s, transform .05s;
+  }
+  button:hover { background: var(--akzent-dunkel); }
+  button:active { transform: translateY(1px); }
+  button:disabled { background: #d8c8b8; cursor: wait; }
+  button.leise { background: var(--akzent-hell); color: var(--akzent-dunkel); }
+  button.leise:hover { background: #f9dcc4; }
+
+  /* ---------- Seitenleiste mit Kundenliste ---------- */
+  aside { width: 290px; background: var(--flaeche); border-right: 1px solid var(--rand); padding: 16px; }
+  aside h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-leise); margin: 0 0 10px; }
+  #suche {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 8px;
+    font: inherit; margin-bottom: 10px; background: var(--hintergrund);
+  }
+  #suche:focus { outline: 2px solid var(--gold); border-color: transparent; }
+  #kundenliste { list-style: none; margin: 0; padding: 0; }
+  #kundenliste li { margin-bottom: 6px; }
+  .kunde-knopf {
+    width: 100%; text-align: left; display: flex; align-items: center; gap: 10px;
+    background: var(--hintergrund); color: var(--text); font-weight: normal; border: 1px solid transparent;
+  }
+  .kunde-knopf:hover { background: var(--akzent-hell); border-color: #f5c9a6; }
+  .kunde-knopf.aktiv { background: var(--akzent); color: #fff; }
+  .kunde-knopf .name { flex: 1; line-height: 1.25; }
+  .kunde-knopf small { display: block; font-size: 12px; opacity: .75; }
+
+  /* Kundenklasse als farbiges Abzeichen */
+  .klasse {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%; color: #fff; font-weight: 700; font-size: 13px; flex-shrink: 0;
+    background: var(--klasse-c);
+  }
+  .klasse-A { background: var(--klasse-a); }
+  .klasse-B { background: var(--klasse-b); }
+  .kunde-knopf.aktiv .klasse { box-shadow: 0 0 0 2px #fff; }
+
+  /* ---------- Hauptbereich ---------- */
+  main { flex: 1; padding: 24px 32px; max-width: 1100px; }
+  .platzhalter { color: var(--text-leise); font-size: 18px; margin-top: 60px; text-align: center; }
+
+  .kopf { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+  .kopf .klasse { width: 48px; height: 48px; font-size: 20px; }
+  .kopf h2 { margin: 0; font-size: 26px; }
+  .kopf .unterzeile { color: var(--text-leise); margin-top: 2px; }
+
+  .karte {
+    background: var(--flaeche); border: 1px solid var(--rand); border-radius: 12px;
+    padding: 16px 20px; margin-bottom: 18px; box-shadow: 0 1px 3px rgba(120, 80, 40, .06);
+  }
+  .karte h3 { margin: 0 0 12px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .karte h3 .zahl {
+    background: var(--akzent-hell); color: var(--akzent-dunkel); border-radius: 10px;
+    padding: 1px 8px; font-size: 13px;
+  }
+
+  /* Kennzahl-Kacheln */
+  .kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .kachel {
+    background: var(--flaeche); border: 1px solid var(--rand); border-left: 5px solid var(--gold);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .kachel .etikett { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-leise); }
+  .kachel .wert { font-size: 17px; font-weight: 600; margin-top: 4px; }
+  .kachel .hinweis { font-size: 12px; color: var(--text-leise); margin-top: 2px; }
+  .kachel.gut { border-left-color: var(--gruen); }
+  .kachel.warnung { border-left-color: var(--rot); background: #fdf1ee; }
+
+  /* Fortschrittsbalken für Kontakt-Rhythmus */
+  .balken { height: 6px; background: #f0e6da; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .balken div { height: 100%; background: var(--gruen); }
+  .warnung .balken div { background: var(--rot); }
+
+  /* Ansprechpartner */
+  .personen { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+  .person { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 10px; background: var(--hintergrund); }
+  .person .kuerzel {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--gold); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;
+  }
+  .person .rolle { font-size: 13px; color: var(--text-leise); }
+  .person.intern .kuerzel { background: var(--akzent-dunkel); }
+
+  /* Anwendungen als Etiketten */
+  .zwei-spalten { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 800px) { .zwei-spalten { grid-template-columns: 1fr; } .ansicht { flex-direction: column; } aside { width: auto; } }
+  .etiketten { display: flex; flex-wrap: wrap; gap: 6px; }
+  .etiketten span { padding: 5px 10px; border-radius: 14px; font-size: 13px; }
+  .etiketten.aktuell span { background: #e7f0e1; color: #3e6630; }
+  .etiketten.potenzial span { background: #fcebd6; color: #9a4f10; }
+  .leer { color: var(--text-leise); font-style: italic; }
+
+  /* Fließtext aus den Dateien */
+  .fliesstext { line-height: 1.55; }
+  .fliesstext p { margin: 0 0 8px; }
+  .fliesstext h4, .fliesstext h5 { margin: 12px 0 6px; color: var(--akzent-dunkel); }
+  .fliesstext ul { margin: 0 0 8px; padding-left: 20px; }
+
+  /* Gesprächsnotizen als Zeitleiste */
+  .zeitleiste { border-left: 3px solid #f0d2b8; margin-left: 10px; padding-left: 18px; }
+  .notiz { position: relative; margin-bottom: 12px; }
+  .notiz::before {
+    content: ""; position: absolute; left: -26px; top: 12px; width: 13px; height: 13px;
+    border-radius: 50%; background: var(--akzent); border: 2px solid #fff; box-shadow: 0 0 0 2px #f0d2b8;
+  }
+  .notiz details { background: var(--hintergrund); border: 1px solid var(--rand); border-radius: 10px; }
+  .notiz summary { cursor: pointer; padding: 10px 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; list-style: none; }
+  .notiz summary::-webkit-details-marker { display: none; }
+  .notiz summary::after { content: "▸"; margin-left: auto; color: var(--akzent); transition: transform .15s; }
+  .notiz details[open] summary::after { transform: rotate(90deg); }
+  .notiz .datum { font-weight: 700; }
+  .notiz .art { font-size: 12px; padding: 2px 8px; border-radius: 10px; background: var(--akzent-hell); color: var(--akzent-dunkel); }
+  .notiz .thema { color: var(--text-leise); }
+  .notiz .fliesstext { padding: 0 14px 12px; border-top: 1px solid var(--rand); padding-top: 10px; }
+
+  .knopfzeile { display: flex; gap: 8px; margin-bottom: 12px; }
+  pre { white-space: pre-wrap; background: var(--hintergrund); padding: 10px; border-radius: 8px; font-size: 13px; }
+  .fehler { color: var(--rot); background: #fdf1ee; padding: 10px; border-radius: 8px; }
+
+  /* ---------- Vertriebs-Assistent ---------- */
+  .rechts { flex: 1; min-width: 0; }
+  .rechts main { max-width: 1100px; padding-top: 0; }
+  .assistent { margin: 24px 32px 18px; max-width: 1036px; }
+  .assistent .hinweis-text { margin: -6px 0 12px; font-size: 13px; color: var(--text-leise); }
+  .frage-zeile { display: flex; gap: 8px; align-items: stretch; }
+  .frage-zeile textarea {
+    flex: 1; padding: 8px 10px; border: 1px solid var(--rand); border-radius: 8px;
+    font: inherit; background: var(--hintergrund); resize: vertical;
+  }
+  .frage-zeile textarea:focus { outline: 2px solid var(--gold); border-color: transparent; }
+  #verlauf:not(:empty) { margin-bottom: 12px; }
+  .eintrag { margin-bottom: 12px; }
+  .eintrag .frage-text {
+    background: var(--akzent-hell); color: var(--akzent-dunkel); border-radius: 10px;
+    padding: 8px 12px; white-space: pre-wrap; font-weight: 600; margin-left: 15%;
+  }
+  .eintrag .antwort { background: var(--hintergrund); border: 1px solid var(--rand); border-radius: 10px; padding: 10px 14px; margin-top: 6px; margin-right: 15%; }
+  .eintrag .laden { color: var(--text-leise); font-style: italic; }
+  .eintrag .dauer { font-size: 12px; color: var(--text-leise); margin-top: 4px; }
+  .beispiel-hinweis { background: #fff4d6; border: 1px solid var(--gold); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 14px; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Kundencockpit</h1>
+  <p>Kunden, Ansprechpartner und Gespräche auf einen Blick</p>
 </header>
 
 <div class="ansicht">
   <aside>
-    <strong>Kunden</strong>
-    <ul id="kundenliste"><li>wird geladen …</li></ul>
+    <h2>Kunden</h2>
+    <input id="suche" type="search" placeholder="Kunde suchen …">
+    <ul id="kundenliste"><li class="leer">wird geladen …</li></ul>
   </aside>
-  <main id="kunde">Bitte links einen Kunden auswählen.</main>
+  <div class="rechts">
+    <section class="karte assistent">
+      <h3>🤖 Vertriebs-Assistent</h3>
+      <p class="hinweis-text">Stellen Sie eine Frage zu Kunden, Gesprächen oder zum Markt. Die Antwort dauert meist 30 Sekunden bis 3 Minuten.</p>
+      <div id="verlauf"></div>
+      <form id="frage-formular" class="frage-zeile">
+        <textarea id="frage" rows="2" placeholder="z. B. Welche Kunden sollte ich diese Woche anrufen?"></textarea>
+        <button id="fragen-knopf" type="submit">Fragen</button>
+      </form>
+    </section>
+    <main id="kunde"><p class="platzhalter">👈 Bitte links einen Kunden auswählen.</p></main>
+  </div>
 </div>
 
 <script>
@@ -52,44 +231,275 @@ async function api(url, daten) {
   return json;
 }
 
+// Entfernt den Kopfbereich (zwischen ---) und liefert nur den Fließtext.
+function ohneKopf(inhalt) {
+  return String(inhalt ?? '').replace(/^﻿?---\r?\n[\s\S]*?\r?\n---\r?\n?/, '').trim();
+}
+
+// Wandelt einfache Markdown-Zeichen (#, **, -) in lesbares HTML um.
+function markdown(text) {
+  const zeilen = esc(text).split(/\r?\n/);
+  let html = '';
+  let inListe = false;
+  for (const zeile of zeilen) {
+    const fett = (s) => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    const punkt = zeile.match(/^\s*[-*]\s+(.*)$/);
+    if (punkt) {
+      if (!inListe) { html += '<ul>'; inListe = true; }
+      html += `<li>${fett(punkt[1])}</li>`;
+      continue;
+    }
+    if (inListe) { html += '</ul>'; inListe = false; }
+    const titel = zeile.match(/^(#{1,6})\s+(.*)$/);
+    if (titel) html += `<h${titel[1].length < 3 ? 4 : 5}>${fett(titel[2])}</h${titel[1].length < 3 ? 4 : 5}>`;
+    else if (zeile.trim()) html += `<p>${fett(zeile)}</p>`;
+  }
+  if (inListe) html += '</ul>';
+  return html;
+}
+
+// Datum "2026-09-08" → "08.09.2026"
+function datumDe(iso) {
+  const t = String(iso ?? '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return t ? `${t[3]}.${t[2]}.${t[1]}` : String(iso ?? '');
+}
+
+// Tage seit einem Datum (ganze Tage).
+function tageSeit(iso) {
+  const d = new Date(`${iso}T00:00:00`);
+  if (isNaN(d)) return null;
+  const heute = new Date(); heute.setHours(0, 0, 0, 0);
+  return Math.round((heute - d) / 86400000);
+}
+
+// Initialen aus einem Namen, z. B. "Dr. Sabine Wolter" → "SW"
+function kuerzel(name) {
+  return String(name ?? '').replace(/^(Dr\.|Prof\.)\s*/g, '').split(/\s+/).filter(Boolean)
+    .map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+}
+
+const liste = (wert) => (Array.isArray(wert) ? wert : wert ? [wert] : []);
+const artSymbol = (art) => ({ Besuch: '🤝', Telefon: '📞', 'E-Mail': '✉️', Mail: '✉️', Messe: '🎪', Teams: '💻', Video: '💻' })[art] || '💬';
+
 // ---------- Kundenliste ----------
 
+let alleKunden = [];
+let aktiveId = null;
+
 async function ladeKundenliste() {
-  const liste = document.getElementById('kundenliste');
+  const ul = document.getElementById('kundenliste');
   try {
-    const kunden = await api('/api/kunden');
-    liste.innerHTML = kunden.map((k) => `<li data-id="${esc(k.id)}">${esc(k.name)} (${esc(k.kundenklasse)})</li>`).join('');
-    liste.querySelectorAll('li').forEach((li) => {
-      li.onclick = () => zeigeKunde(li.dataset.id).catch((fehler) => {
-        document.getElementById('kunde').innerHTML = `<p class="fehler">${esc(fehler.message)}</p>`;
-      });
-    });
+    alleKunden = await api('/api/kunden');
+    zeichneKundenliste();
   } catch (fehler) {
-    liste.innerHTML = `<li class="fehler">${esc(fehler.message)}</li>`;
+    ul.innerHTML = `<li class="fehler">${esc(fehler.message)}</li>`;
   }
 }
 
-// ---------- Ein Kunde: Rohdaten ----------
+function zeichneKundenliste() {
+  const ul = document.getElementById('kundenliste');
+  const suchtext = document.getElementById('suche').value.trim().toLowerCase();
+  const treffer = alleKunden.filter((k) => `${k.name} ${k.branche} ${k.land}`.toLowerCase().includes(suchtext));
+  if (!treffer.length) { ul.innerHTML = '<li class="leer">Kein Kunde gefunden.</li>'; return; }
+  ul.innerHTML = treffer.map((k) => `
+    <li>
+      <button class="kunde-knopf ${k.id === aktiveId ? 'aktiv' : ''}" data-id="${esc(k.id)}" title="Kundenklasse ${esc(k.kundenklasse)}">
+        <span class="klasse klasse-${esc(k.kundenklasse)}">${esc(k.kundenklasse)}</span>
+        <span class="name">${esc(k.name)}<small>${esc(k.branche)} · ${esc(k.land)}</small></span>
+      </button>
+    </li>`).join('');
+  ul.querySelectorAll('button').forEach((knopf) => {
+    knopf.onclick = () => {
+      aktiveId = knopf.dataset.id;
+      zeichneKundenliste();
+      zeigeKunde(aktiveId).catch((fehler) => {
+        document.getElementById('kunde').innerHTML = `<p class="fehler">${esc(fehler.message)}</p>`;
+      });
+    };
+  });
+}
+
+document.getElementById('suche').oninput = zeichneKundenliste;
+
+// ---------- Ein Kunde: übersichtliche Ansicht ----------
 
 async function zeigeKunde(id) {
   const bereich = document.getElementById('kunde');
-  bereich.textContent = 'wird geladen …';
+  bereich.innerHTML = '<p class="platzhalter">wird geladen …</p>';
   const { kunde, gespraeche } = await api(`/api/kunden/${id}`);
 
+  // Kontakt-Rhythmus: Wie lange ist das letzte Gespräch / der letzte Besuch her?
+  const ziel = kunde.betreuungsziel || {};
+  const letzter = gespraeche[0];
+  const letzterBesuch = gespraeche.find((g) => g.art === 'Besuch');
+  const rhythmusKachel = (titel, gespraech, sollTage) => {
+    if (!gespraech) return `<div class="kachel warnung"><div class="etikett">${titel}</div><div class="wert">noch keiner</div></div>`;
+    const tage = tageSeit(gespraech.datum);
+    const soll = Number(sollTage) || null;
+    const ueberfaellig = soll && tage > soll;
+    const anteil = soll ? Math.min(100, Math.round((tage / soll) * 100)) : 0;
+    return `
+      <div class="kachel ${soll ? (ueberfaellig ? 'warnung' : 'gut') : ''}">
+        <div class="etikett">${titel}</div>
+        <div class="wert">vor ${esc(tage)} Tagen</div>
+        <div class="hinweis">${esc(datumDe(gespraech.datum))}${soll ? ` · Ziel: alle ${esc(soll)} Tage${ueberfaellig ? ' – <strong>überfällig</strong>' : ''}` : ''}</div>
+        ${soll ? `<div class="balken"><div style="width:${anteil}%"></div></div>` : ''}
+      </div>`;
+  };
+
+  const intern = [
+    kunde.aussendienst && { name: kunde.aussendienst, rolle: 'Außendienst (bei uns)' },
+    kunde.anwendungstechniker && { name: kunde.anwendungstechniker, rolle: 'Anwendungstechnik (bei uns)' },
+  ].filter(Boolean);
+  const person = (p, extra = '') => `
+    <div class="person ${extra}">
+      <div class="kuerzel">${esc(kuerzel(p.name))}</div>
+      <div><div>${esc(p.name)}</div><div class="rolle">${esc(p.rolle)}</div></div>
+    </div>`;
+  const etiketten = (werte, art) => werte.length
+    ? `<div class="etiketten ${art}">${werte.map((w) => `<span>${esc(w)}</span>`).join('')}</div>`
+    : '<p class="leer">keine Angaben</p>';
+
   bereich.innerHTML = `
-    <h2>${esc(kunde.name)}</h2>
+    <div class="kopf">
+      <span class="klasse klasse-${esc(kunde.kundenklasse)}">${esc(kunde.kundenklasse)}</span>
+      <div>
+        <h2>${esc(kunde.name)}</h2>
+        <div class="unterzeile">🏭 ${esc(kunde.branche)} · 📍 ${esc(kunde.land)} · Kundenklasse ${esc(kunde.kundenklasse)}</div>
+      </div>
+    </div>
 
-    <h3>Stammdaten: ${esc(kunde.datei)}</h3>
-    <pre>${esc(kunde.inhalt)}</pre>
+    <div class="kacheln">
+      ${rhythmusKachel('Letzter Kontakt', letzter, ziel.kontakt_alle_tage)}
+      ${rhythmusKachel('Letzter Besuch', letzterBesuch, ziel.besuch_alle_tage)}
+      <div class="kachel">
+        <div class="etikett">Gesprächsnotizen</div>
+        <div class="wert">${gespraeche.length}</div>
+        <div class="hinweis">${letzter ? `zuletzt: ${esc(letzter.art)} mit ${esc(letzter.ansprechpartner)}` : ''}</div>
+      </div>
+    </div>
 
-    <h3>Gesprächsnotizen (${gespraeche.length})</h3>
-    ${gespraeche.map((g) => `
-      <details>
-        <summary>${esc(g.datum)} – ${esc(g.art)} – ${esc(g.ansprechpartner)}</summary>
-        <pre>${esc(g.inhalt)}</pre>
-      </details>`).join('')}
+    <div class="karte">
+      <h3>👥 Ansprechpartner</h3>
+      <div class="personen">
+        ${liste(kunde.ansprechpartner).map((p) => person(p)).join('')}
+        ${intern.map((p) => person(p, 'intern')).join('')}
+      </div>
+    </div>
+
+    <div class="zwei-spalten">
+      <div class="karte">
+        <h3>✅ Aktuelle Anwendungen</h3>
+        ${etiketten(liste(kunde.aktuelle_anwendungen), 'aktuell')}
+      </div>
+      <div class="karte">
+        <h3>🌱 Potenzial</h3>
+        ${etiketten(liste(kunde.potenzial_anwendungen), 'potenzial')}
+      </div>
+    </div>
+
+    <div class="karte">
+      <h3>📋 Über den Kunden</h3>
+      <div class="fliesstext">${markdown(ohneKopf(kunde.inhalt)) || '<p class="leer">keine Beschreibung</p>'}</div>
+    </div>
+
+    <div class="karte">
+      <h3>🗂️ Gesprächsnotizen <span class="zahl">${gespraeche.length}</span></h3>
+      ${gespraeche.length ? `
+        <div class="knopfzeile">
+          <button class="leise" id="alle-auf">Alle aufklappen</button>
+          <button class="leise" id="alle-zu">Alle zuklappen</button>
+        </div>` : '<p class="leer">Noch keine Gespräche erfasst.</p>'}
+      <div class="zeitleiste">
+        ${gespraeche.map((g, i) => `
+          <div class="notiz">
+            <details ${i === 0 ? 'open' : ''}>
+              <summary>
+                <span class="datum">${esc(datumDe(g.datum))}</span>
+                <span class="art">${artSymbol(g.art)} ${esc(g.art)}</span>
+                <span>mit ${esc(g.ansprechpartner)}</span>
+                <span class="thema">${esc(themaAusDatei(g.datei))}</span>
+              </summary>
+              <div class="fliesstext">${markdown(ohneKopf(g.inhalt))}</div>
+            </details>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <details class="karte">
+      <summary style="cursor:pointer">Rohdaten anzeigen (${esc(kunde.datei)})</summary>
+      <pre>${esc(kunde.inhalt)}</pre>
+    </details>
   `;
+
+  const alleDetails = (offen) => bereich.querySelectorAll('.notiz details').forEach((d) => { d.open = offen; });
+  const auf = document.getElementById('alle-auf');
+  if (auf) {
+    auf.onclick = () => alleDetails(true);
+    document.getElementById('alle-zu').onclick = () => alleDetails(false);
+  }
 }
+
+// Thema aus dem Dateinamen, z. B. "gespraeche/2026-07-02_k01_farbabweichung.md" → "Farbabweichung"
+function themaAusDatei(datei) {
+  const t = String(datei ?? '').match(/_[^_]+_([^/]+)\.md$/);
+  if (!t) return '';
+  const s = t[1].replace(/-/g, ' ');
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ---------- Vertriebs-Assistent ----------
+
+document.getElementById('frage-formular').onsubmit = async (ereignis) => {
+  ereignis.preventDefault();
+  const feld = document.getElementById('frage');
+  const knopf = document.getElementById('fragen-knopf');
+  const frage = feld.value.trim();
+  if (!frage || knopf.disabled) return;
+
+  // Neuen Eintrag unten an den Verlauf anhängen
+  const eintrag = document.createElement('div');
+  eintrag.className = 'eintrag';
+  eintrag.innerHTML = `
+    <div class="frage-text">${esc(frage)}</div>
+    <div class="antwort"><span class="laden">⏳ Die KI denkt nach … 0 Sekunden</span></div>`;
+  document.getElementById('verlauf').appendChild(eintrag);
+  const antwortFeld = eintrag.querySelector('.antwort');
+  eintrag.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Knopf sperren und Sekunden mitzählen
+  feld.value = '';
+  knopf.disabled = true;
+  knopf.textContent = 'Bitte warten …';
+  const start = Date.now();
+  const uhr = setInterval(() => {
+    const laden = antwortFeld.querySelector('.laden');
+    if (laden) laden.textContent = `⏳ Die KI denkt nach … ${Math.round((Date.now() - start) / 1000)} Sekunden`;
+  }, 1000);
+
+  try {
+    const antwort = await api('/api/agent/frage', { frage });
+    antwortFeld.innerHTML = `
+      ${antwort.fallback ? `<div class="beispiel-hinweis">⚠️ <strong>Beispielergebnis – KI nicht erreichbar.</strong> ${esc(antwort.grund)}</div>` : ''}
+      <div class="fliesstext">${markdown(antwort.text) || '<p class="leer">Keine Antwort erhalten.</p>'}</div>
+      ${antwort.sekunden != null ? `<div class="dauer">Antwort nach ${esc(Math.round(antwort.sekunden))} Sekunden</div>` : ''}`;
+  } catch (fehler) {
+    antwortFeld.innerHTML = `<p class="fehler">Das hat leider nicht geklappt: ${esc(fehler.message)}</p>`;
+  } finally {
+    clearInterval(uhr);
+    knopf.disabled = false;
+    knopf.textContent = 'Fragen';
+    feld.focus();
+  }
+};
+
+// Enter schickt die Frage ab, Umschalt+Enter macht eine neue Zeile.
+document.getElementById('frage').onkeydown = (ereignis) => {
+  if (ereignis.key === 'Enter' && !ereignis.shiftKey) {
+    ereignis.preventDefault();
+    document.getElementById('frage-formular').requestSubmit();
+  }
+};
 
 ladeKundenliste();
 </script>
