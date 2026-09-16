@@ -44,7 +44,9 @@ Erkläre mir dieses Projekt in einfachen Worten. Wofür ist es da, und was steck
 
 **Worum geht es?** Die App läuft nur auf Ihrem Laptop. Die Adresse `localhost` im Browser bedeutet „dieser Computer“. Bisher zeigt die App nur Rohdaten. Sie lassen Codex ein Eingabefeld einbauen: den **Vertriebs-Assistenten**. Dort stellt der Vertrieb später seine Fragen.
 
-Der Unterschied: **Codex** (hier in VS Code) baut die App und darf Dateien ändern. Der **Assistent** in der App beantwortet Fragen und darf nur lesen. Die KI dahinter ist schon fertig, es fehlt nur das Eingabefeld.
+Die KI hinter dem Assistenten ist schon fertig, es fehlt nur das Eingabefeld.
+
+> **INFO:** Der **Vertriebs-Assistent** in der App darf nur lesen – er beantwortet Fragen, speichert aber nichts. Alles, was Dateien anlegt oder ändert (Design, Gesprächsnotizen, Anleitungen), machen Sie im **Codex-Chat** hier in VS Code.
 
 **Beispiel für den Anfang:**
 
@@ -135,7 +137,7 @@ Baue oben in der App einen zweiten Reiter „Nächste Schritte“ mit einem Knop
 **Danach selbst an der Logik drehen**, zum Beispiel:
 
 - Gewichtung ändern – in `anleitungen/next-best-action.md` im Abschnitt „Gewichtung – hier anpassen“ direkt in der Datei oder per Prompt („Ein Wettbewerbssignal zählt 40 statt 25 Punkte.“)
-- Eine neue Gesprächsnotiz anlegen lassen:
+- Eine neue Gesprächsnotiz anlegen lassen – im Codex-Chat, nicht im Assistenten:
 
   ```text
   Lege eine neue Gesprächsnotiz an: Heute Telefonat mit Tomasz Wójcik von Odra Panele. Die zweite Paneel-Linie ist beschlossen, Start April 2027. Sie brauchen in 10 Tagen ein Angebot für ca. 63.000 m² pro Jahr. Ein anderer Anbieter aus Polen hat bereits ein Angebot abgegeben.
