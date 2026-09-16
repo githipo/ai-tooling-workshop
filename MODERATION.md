@@ -7,10 +7,10 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 | Start | Block | Dauer | Bei Zeitnot |
 |---|---|---|---|
 | 0:00 | Begrüßung und Schritt 0 – Umschauen | 15 min | Nur den Beispiel-Prompt |
-| 0:15 | Schritt 1 – App starten und gestalten | 15 min | Nur starten, nicht gestalten |
-| 0:30 | Schritt 2 – Ohne und mit Anleitung | 40 min | Bau am Beamer vormachen oder zu `stufe-2-fertig` springen |
+| 0:15 | Schritt 1 – App starten und Assistenten bauen | 20 min | Bau am Beamer vormachen oder zu `stufe-1-fertig` springen |
+| 0:35 | Schritt 2 – Ohne und mit Anleitung | 35 min | Anleitung nicht ändern, nur vergleichen |
 | 1:10 | Pause | 10 min | |
-| 1:20 | Schritt 3 – Fragen zu einem Kunden | 25 min | Nur den Beispiel-Prompt |
+| 1:20 | Schritt 3 – Eigene Fragen | 25 min | Nur den Beispiel-Prompt |
 | 1:45 | Schritt 4 – Nächste Schritte | 40 min | Zu `stufe-4-start` springen, nur die Gewichtung ändern |
 | 2:25 | Abschluss | 5 min | |
 | – | Schritt 5 – Diktat | – | Nur wenn eine Gruppe früher fertig ist |
@@ -19,18 +19,25 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 
 **Schritt 0:** Codex erklärt Ordner und Dateien. Gut ist, wenn jemand selbst eine Datei in `gespraeche/` öffnet: Es ist nur Text.
 
-**Schritt 1:** Codex sagt, dass `npm run dev` im Terminal nötig ist (so steht es in `AGENTS.md`). Das Terminal muss offen bleiben. Am Anfang zeigt die App nur die Kundenliste und die Rohdaten.
+**Schritt 1:**
+
+- Codex sagt, dass `npm run dev` im Terminal nötig ist (so steht es in `AGENTS.md`). Das Terminal muss offen bleiben. Am Anfang zeigt die App nur die Kundenliste und die Rohdaten.
+- Den Bau des Assistenten am Beamer vormachen, dann nachmachen lassen.
+- **Erwartetes Ergebnis:** Eingabefeld, Knopf „Fragen“, Schalter „Anleitung verwenden“, Ladeanzeige mit Sekunden. Die Antworten stehen als Verlauf untereinander.
+- **Den Unterschied betonen:** Codex baut die App, der Assistent beantwortet Fragen und darf nur lesen.
+- **Hilfe bei Problemen:** Nach zwei erfolglosen Versuchen zu `stufe-1-fertig` springen.
 
 **Schritt 2:**
 
-- Den ersten Bau am Beamer vormachen, dann nachmachen lassen.
-- **Erwartetes Ergebnis:** zwei Knöpfe, eine Ladeanzeige mit Sekunden und beide Ergebnisse nebeneinander. Die Version „mit Anleitung“ zeigt feste Abschnitte mit Quellen.
-- **Für die Vorführung Lahntal Caravanwerk oder Wiesental Reisemobile nehmen.** Nur für diese beiden gibt es Beispielergebnisse.
-- **Worauf man achten kann:** Die Version „ohne“ kennt keine Marktmeldungen, hat keine einheitliche Gliederung und meist keine Quellen.
-- **Nach dem Nachhaltigkeits-Prompt** erscheint der neue Abschnitt ohne Programmierung. Die App zeigt die Abschnitte so an, wie die KI sie liefert.
-- **Hilfe bei Problemen:** Nach zwei erfolglosen Versuchen zum Zwischenstand springen.
+- **Vorführfrage:** „Fasse Lahntal Caravanwerk zusammen.“ Für diese Frage gibt es Beispielantworten, ohne und mit Anleitung.
+- **Ohne Anleitung:** keine feste Gliederung, meist keine Quellen, Marktmeldungen nur zufällig.
+- **Mit Anleitung:** sieben feste Abschnitte mit Quellen, dazu ein Steckbrief. Der letzte Besuch liegt 182 Tage zurück, das Besuchsziel ist um 122 Tage überschritten.
+- **Nach dem Nachhaltigkeits-Prompt** hat die Antwort acht Abschnitte, ohne dass jemand programmiert hat.
 
-**Schritt 3:** Wer noch Zeit hat, lässt ein Fragefeld bauen. Es gibt dafür kein Beispielergebnis. Ist die KI nicht erreichbar, zeigt die App eine Fehlermeldung.
+**Schritt 3:**
+
+- **Mit Anleitung** folgt die Antwort dem Aufbau aus `anleitungen/kundenabfrage.md`: Kurzantwort, Kommerziell, Wettbewerb, Technisch, Offen, jeweils mit Quellen.
+- **Die KI wählt die Anleitung selbst.** Der Server sagt ihr nur „Wähle die passende Anleitung in `anleitungen/`“.
 
 **Schritt 4:**
 
@@ -43,12 +50,15 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 
 ## Ohne und mit Anleitung: So bleibt der Vergleich fair
 
-Der Vergleich läuft bewusst **nur über die Knöpfe der App** und nicht im Codex-Chat. Im Chat liest Codex immer `AGENTS.md` und kann jederzeit in `anleitungen/` schauen.
+Der Vergleich läuft bewusst **nur über den Assistenten in der App** und nicht im Codex-Chat. Im Chat liest Codex immer `AGENTS.md` und kann jederzeit in `anleitungen/` schauen.
 
-- **Modus „ohne“:** Der Server kopiert nur die Kundendatei und die Gesprächsnotizen dieses Kunden in einen leeren Temp-Ordner. Dort startet er Codex mit dem Prompt „Fasse die Informationen zu diesem Kunden zusammen. Nutze nur die Dateien in diesem Ordner.“ In diesem Ordner gibt es weder `AGENTS.md` noch `anleitungen/` noch `markt/`.
-- **Modus „mit“:** Codex läuft im Projektordner und bekommt die Anweisung, `anleitungen/kunden-uebersicht.md` zu befolgen.
+- **Schalter aus:**
+  - Der Server kopiert `kunden/`, `gespraeche/` und `markt/` in einen leeren Temp-Ordner und startet Codex dort.
+  - Der Prompt lautet: „Heute ist der <Datum>. Nutze nur die Dateien in diesem Ordner. Frage: …“
+  - In diesem Ordner gibt es weder `AGENTS.md` noch `anleitungen/`. Beide Seiten sehen also dieselben Daten. Der einzige Unterschied ist die Anleitung.
+- **Schalter an:** Codex läuft im Projektordner mit dem Prompt „Wähle die passende Anleitung in anleitungen/ und befolge sie. Frage: …“.
 - **Kontrolle:** Das Terminal von `npm run dev` zeigt bei jedem Aufruf Ordner und Prompt (`[KI] START …`).
-- **Wichtig:** Auf den Laptops darf es **keine persönliche Codex-Anleitung** geben, also keine Datei `%USERPROFILE%\.codex\AGENTS.md`. Codex liest diese Datei in jedem Ordner, also auch im Modus „ohne“.
+- **Wichtig:** Auf den Laptops darf es **keine persönliche Codex-Anleitung** geben, also keine Datei `%USERPROFILE%\.codex\AGENTS.md`. Codex liest diese Datei in jedem Ordner, also auch bei ausgeschaltetem Schalter.
 - **Zusätzliche Regel in `AGENTS.md`:** Bittet jemand im Chat um ein Ergebnis „ohne Anleitung“, öffnet Codex keine Datei in `anleitungen/`. Das ist eine Anweisung, keine technische Sperre.
 
 ## Vorbereitung (am Vortag, je Laptop)
@@ -72,7 +82,7 @@ Der Vergleich läuft bewusst **nur über die Knöpfe der App** und nicht im Code
    ```
 
    Dann http://localhost:3000 öffnen:
-   - bei Lahntal Caravanwerk beide Zusammenfassungen testen,
+   - im Assistenten „Fasse Lahntal Caravanwerk zusammen.“ einmal ohne und einmal mit Anleitung fragen,
    - im Reiter „Nächste Schritte“ auf „Aktualisieren“ klicken.
 
    Danach mit **Strg+C** beenden und zurücksetzen:
@@ -88,15 +98,15 @@ Der Vergleich läuft bewusst **nur über die Knöpfe der App** und nicht im Code
 | Tag | Stand |
 |---|---|
 | `stufe-0-start` | Ausgangszustand (entspricht `main`): nur Kundenliste und Rohdaten |
-| `stufe-2-fertig` | Nach Schritt 2: Design, Kundenansicht mit Steckbrief, Knöpfe für beide Zusammenfassungen, Abschnitt „Nachhaltigkeit“ |
-| `stufe-4-start` | Zusätzlich Fragefeld und Reiter „Nächste Schritte“. Gewichtung und Notizen sind noch unverändert. |
+| `stufe-1-fertig` | Nach Schritt 1: Design und Vertriebs-Assistent; Anleitung noch unverändert |
+| `stufe-4-start` | Zusätzlich Abschnitt „Nachhaltigkeit“ und Reiter „Nächste Schritte“. Gewichtung und Notizen sind noch unverändert. |
 | `stufe-4-fertig` | Zusätzlich Gewichtung „Wettbewerbssignal 40“ und neue Notiz zu Odra Panele |
 
 Hängt eine Gruppe fest, die App mit **Strg+C** beenden und im Terminal eingeben:
 
 ```text
 git stash push --include-untracked -m "eigener Stand"
-git switch --detach stufe-2-fertig
+git switch --detach stufe-1-fertig
 ```
 
 Zurück zum eigenen Stand:
@@ -128,7 +138,9 @@ git clean -fd
 
 - **In der App:**
   - Nach spätestens 180 Sekunden bricht der Server ab.
-  - Danach zeigt die App ein Beispielergebnis aus `fallback/` mit gelbem Hinweis. Das gibt es für die Zusammenfassungen von Lahntal Caravanwerk und Wiesental Reisemobile sowie für „Nächste Schritte“.
+  - Danach zeigt die App ein Beispielergebnis aus `fallback/` mit gelbem Hinweis.
+  - **Im Assistenten** ist das immer die Antwort auf „Fasse Lahntal Caravanwerk zusammen.“ (ohne bzw. mit Anleitung), egal welche Frage gestellt wurde. Die Beispielantwort sagt das in der ersten Zeile.
+  - **Bei „Nächste Schritte“** ist es die zuletzt erfolgreiche Liste.
 - **Im Codex-Chat:** Antwort stoppen, neuen Chat beginnen und den Prompt erneut senden. Hilft das nicht, am Moderationsbildschirm weitermachen oder zum passenden Tag springen.
 - **Im Terminal des Servers:** Jeder KI-Aufruf wird protokolliert (`[KI] START`, `[KI] OK` oder `[KI] FEHLER`), mit Ordner, Prompt und Dauer.
 
@@ -166,7 +178,7 @@ Für schnellere Antworten: `$env:AGENT_CLI="codex -c model_reasoning_effort=low"
 
 | Datei / Ordner | Inhalt |
 |---|---|
-| `public/index.html` | Oberfläche der App. Hier baut Codex die Knöpfe ein. |
+| `public/index.html` | Oberfläche der App. Hier baut Codex den Assistenten und den Reiter ein. |
 | `server.js` | Webserver: liefert die Daten und startet Codex im Hintergrund (gesperrt) |
 | `fallback/` | Beispielergebnisse, falls die KI nicht antwortet |
 | `scripts/check.js` | Vorab-Prüfung (`npm run check`) |
@@ -188,7 +200,7 @@ Für schnellere Antworten: `$env:AGENT_CLI="codex -c model_reasoning_effort=low"
 |---|---|---|---|---|
 | **Node.js** (LTS, ab Version 20) | Führt die App aus | IT oder Moderation | kostenlos | App startet nicht; am Moderationsbildschirm weitermachen |
 | **Express** (Version 5) | Baustein für den Webserver, einzige Programmbibliothek | `npm install` aus dem npm-Verzeichnis im Internet | kostenlos | App startet nicht; `node_modules` von einem anderen Laptop kopieren |
-| **Codex CLI** und **Codex-Erweiterung für VS Code** | Der KI-Agent im Chat und hinter den App-Knöpfen | Installation durch IT oder Moderation, Anmeldung mit ChatGPT-Abo | im ChatGPT-Abo enthalten (mit Nutzungsgrenzen) | App zeigt Beispielergebnisse aus `fallback/`; Chat-Übungen am Moderationsbildschirm |
+| **Codex CLI** und **Codex-Erweiterung für VS Code** | Der KI-Agent im Chat und hinter dem Assistenten und den Empfehlungen | Installation durch IT oder Moderation, Anmeldung mit ChatGPT-Abo | im ChatGPT-Abo enthalten (mit Nutzungsgrenzen) | App zeigt Beispielergebnisse aus `fallback/`; Chat-Übungen am Moderationsbildschirm |
 | **Internetzugang** | Codex arbeitet mit den Servern von OpenAI | Firmennetz; OpenAI-Dienste müssen erreichbar sein | – | wie oben: Beispielergebnisse und Git-Tags |
 | **Windows-Diktat** (Windows+H) | Schritt 5 | In Windows enthalten; nutzt die Online-Spracherkennung von Microsoft | kostenlos | Schritt 5 mit getipptem Text oder nur mit `eingang/diktat-wiesental.txt` |
 | **Git** | Zwischenstände (Tags) und Zurücksetzen | IT oder Moderation | kostenlos | Keine Zwischenstände; Ordner vorab als ZIP-Kopien je Stufe bereithalten |

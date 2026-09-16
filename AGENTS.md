@@ -39,7 +39,7 @@ Alle Firmen, Personen, Zahlen und Meldungen sind **frei erfunden**. Es gibt kein
 - Keine neuen Pakete installieren, keine externen Dienste oder Internetadressen einbinden.
 - Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter). Erkläre stattdessen: in VS Code Menü „Terminal → Neues Terminal“, `npm run dev` eingeben, Enter, Fenster offen lassen, dann http://localhost:3000 im Browser öffnen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden (F5).
 - Richte dich nach einer Datei in `anleitungen/` nur, wenn der Prompt sie nennt oder du das Antwortformat einer Schnittstelle (siehe unten) brauchst.
-- Bittet ein Prompt um ein Ergebnis „ohne Anleitung“, öffne keine Datei in `anleitungen/`. Weise darauf hin, dass der faire Vergleich über den Knopf „Zusammenfassung ohne Anleitung“ in der App läuft.
+- Bittet ein Prompt um ein Ergebnis „ohne Anleitung“, öffne keine Datei in `anleitungen/`. Weise darauf hin, dass der faire Vergleich im Vertriebs-Assistenten der App läuft (Schalter „Anleitung verwenden“ aus).
 - Alle Texte für die Nutzer auf Deutsch.
 
 ## Schnittstellen des Servers
@@ -50,14 +50,13 @@ Der Server ist fertig und gesperrt (siehe oben). Neue Funktionen der App entsteh
 |---|---|---|---|
 | Kundenliste | `GET /api/kunden` | – | Liste aller Kunden: Felder aus dem Kopfbereich plus `datei` |
 | Daten eines Kunden | `GET /api/kunden/:id` | – | `{ kunde, gespraeche }` – jeweils Kopfdaten plus `datei` und `inhalt` (ganzer Dateitext); `gespraeche` neueste zuerst |
-| KI-Zusammenfassung ohne / mit Anleitung | `POST /api/agent/uebersicht` | `{ kundeId, modus }`, `modus` ist `"ohne"` oder `"mit"` | KI-Zusammenfassung eines Kunden. Bei `"ohne"` sieht die KI nur die Dateien dieses Kunden in einem leeren Ordner. |
-| Frage-Funktion | `POST /api/agent/frage` | `{ kundeId, frage }` | KI-Antwort auf eine freie Frage nach `anleitungen/kundenabfrage.md` |
+| Vertriebs-Assistent / Frage-Funktion | `POST /api/agent/frage` | `{ frage, anleitung }`, `anleitung` ist `true` oder `false` | KI-Antwort als Text. Bei `true` folgt die KI der passenden Datei in `anleitungen/`. Bei `false` sieht sie nur `kunden/`, `gespraeche/` und `markt/` in einem leeren Ordner. |
 | Empfehlungen / Nächste Schritte | `POST /api/agent/next-best-action` | `{}` | KI-Empfehlungen für alle Kunden |
 
 Alle `POST /api/agent/...` antworten mit:
 
 - `text` – die Antwort der KI als Text
-- `json` – dieselbe Antwort als Daten, falls sie JSON ist, sonst `null`. Das Format steht im Abschnitt „Ausgabeformat“ von `anleitungen/kunden-uebersicht.md` (bei `modus: "mit"`) bzw. `anleitungen/next-best-action.md`.
+- `json` – nur bei den Empfehlungen: die Liste als Daten (Format im Abschnitt „Ausgabeformat“ von `anleitungen/next-best-action.md`), sonst `null`
 - `fallback` – `true`, wenn die KI nicht erreichbar war und ein vorbereitetes Beispiel aus `fallback/` kommt; der Grund steht dann in `grund`
 - `sekunden` – Dauer des KI-Aufrufs
 
@@ -67,7 +66,7 @@ Beim Einbau in `public/index.html`:
 
 - KI-Aufrufe dauern 30 Sekunden bis 3 Minuten. Zeige eine Ladeanzeige mit mitlaufenden Sekunden und sperre den Knopf so lange.
 - Bei `fallback: true` einen gut sichtbaren Hinweis zeigen („Beispielergebnis – KI nicht erreichbar“) samt `grund`.
-- Ist `json` leer, `text` anzeigen.
+- `text` ist Fließtext mit Markdown-Zeichen (`#`, `**`, `-`). Mit erhaltenen Zeilenumbrüchen anzeigen; Überschriften und Fettdruck dürfen hervorgehoben werden. Ist `json` leer, `text` anzeigen.
 - Listen und Abschnitte aus `json` vollständig und in der gelieferten Reihenfolge anzeigen, nicht fest einprogrammieren – die Anleitungen können sich ändern.
 - Für Aufrufe die vorhandene Funktion `api()` nutzen, alle Texte aus Antworten mit `esc()` absichern.
 - Kein Framework, keine externen Bibliotheken.

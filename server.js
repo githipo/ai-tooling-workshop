@@ -222,54 +222,34 @@ app.get('/api/kunden/:id', (req, res) => {
   res.json({ kunde, gespraeche: gespraecheVon(kunde.id) });
 });
 
-// Kundenübersicht durch die KI – "ohne" oder "mit" Anleitung.
-app.post('/api/agent/uebersicht', async (req, res) => {
-  const { kundeId, modus } = req.body ?? {};
-  const kunde = findeKunde(kundeId);
-  if (!kunde) return res.status(404).json({ fehler: `Kunde "${kundeId}" nicht gefunden.` });
+// Vertriebs-Assistent: freie Frage, "ohne" oder "mit" Anleitung.
+app.post('/api/agent/frage', async (req, res) => {
+  const { frage, anleitung } = req.body ?? {};
+  if (!String(frage ?? '').trim()) return res.status(400).json({ fehler: 'Bitte eine Frage eingeben.' });
 
-  if (modus === 'ohne') {
-    // Nur die Rohdaten dieses Kunden in einen leeren Ordner kopieren – keine AGENTS.md, keine Anleitungen.
+  let ergebnis;
+  if (anleitung) {
+    ergebnis = await runAgent({
+      prompt: `Wähle die passende Anleitung in anleitungen/ und befolge sie. Heute ist der ${STICHTAG}. `
+        + `Antworte als gut lesbarer Text, nicht als JSON.\n\nFrage: ${frage}`,
+      cwd: __dirname,
+      titel: 'Frage MIT Anleitung',
+    });
+  } else {
+    // Nur die Daten in einen leeren Ordner kopieren – keine AGENTS.md, keine Anleitungen.
     const ordner = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-ohne-'));
-    for (const d of [kunde, ...gespraecheVon(kunde.id)]) {
-      fs.copyFileSync(path.join(__dirname, d.datei), path.join(ordner, path.basename(d.datei)));
+    for (const unterordner of ['kunden', 'gespraeche', 'markt']) {
+      fs.cpSync(path.join(__dirname, unterordner), path.join(ordner, unterordner), { recursive: true });
     }
-    const ergebnis = await runAgent({
-      prompt: 'Fasse die Informationen zu diesem Kunden zusammen. Nutze nur die Dateien in diesem Ordner.',
+    ergebnis = await runAgent({
+      prompt: `Heute ist der ${STICHTAG}. Nutze nur die Dateien in diesem Ordner.\n\nFrage: ${frage}`,
       cwd: ordner,
-      titel: `Übersicht OHNE Anleitung – ${kunde.name}`,
+      titel: 'Frage OHNE Anleitung',
     });
     fs.rmSync(ordner, { recursive: true, force: true });
-    if (!ergebnis.ok) return sendeFallback(res, `uebersicht-ohne-${kunde.id}.md`, ergebnis.text);
-    return res.json({ text: ergebnis.text, json: null, fallback: false, sekunden: ergebnis.sekunden });
   }
 
-  if (modus === 'mit') {
-    const ergebnis = await runAgent({
-      prompt: `Befolge die Anleitung in anleitungen/kunden-uebersicht.md für den Kunden mit der id "${kunde.id}" (${kunde.name}). `
-        + `Stichtag ist der ${STICHTAG}. Antworte nur mit dem JSON.`,
-      cwd: __dirname,
-      titel: `Übersicht MIT Anleitung – ${kunde.name}`,
-    });
-    if (!ergebnis.ok) return sendeFallback(res, `uebersicht-mit-${kunde.id}.json`, ergebnis.text);
-    return res.json({ text: ergebnis.text, json: alsJson(ergebnis.text), fallback: false, sekunden: ergebnis.sekunden });
-  }
-
-  res.status(400).json({ fehler: 'modus muss "ohne" oder "mit" sein.' });
-});
-
-// Freie Frage zu einem Kunden (für Schritt 3 – ein Fragefeld in der App).
-app.post('/api/agent/frage', async (req, res) => {
-  const { kundeId, frage } = req.body ?? {};
-  const kunde = findeKunde(kundeId);
-  if (!kunde || !frage) return res.status(400).json({ fehler: 'Bitte kundeId und frage mitschicken.' });
-  const ergebnis = await runAgent({
-    prompt: `Befolge die Anleitung in anleitungen/kundenabfrage.md. Kunde: ${kunde.name} (id "${kunde.id}"). `
-      + `Stichtag ist der ${STICHTAG}. Frage: ${frage}`,
-    cwd: __dirname,
-    titel: `Kundenabfrage – ${kunde.name}`,
-  });
-  if (!ergebnis.ok) return res.status(502).json({ fehler: ergebnis.text });
+  if (!ergebnis.ok) return sendeFallback(res, anleitung ? 'frage-mit.md' : 'frage-ohne.md', ergebnis.text);
   res.json({ text: ergebnis.text, json: null, fallback: false, sekunden: ergebnis.sekunden });
 });
 

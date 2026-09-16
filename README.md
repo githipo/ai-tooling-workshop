@@ -39,9 +39,11 @@ Erkläre mir dieses Projekt in einfachen Worten. Wofür ist es da, und was steck
 
 ---
 
-## Schritt 1 – App starten und gestalten (15 min)
+## Schritt 1 – App starten und Assistenten bauen (20 min)
 
-**Worum geht es?** Die App läuft nur auf Ihrem Laptop. Die Adresse `localhost` im Browser bedeutet „dieser Computer“. Sie starten die App und lassen Codex ihr Aussehen verändern – und sehen, wie aus einem Satz eine sichtbare Änderung wird.
+**Worum geht es?** Die App läuft nur auf Ihrem Laptop. Die Adresse `localhost` im Browser bedeutet „dieser Computer“. Bisher zeigt die App nur Rohdaten. Sie lassen Codex ein Eingabefeld einbauen: den **Vertriebs-Assistenten**. Dort stellt der Vertrieb später seine Fragen.
+
+Der Unterschied: **Codex** (hier in VS Code) baut die App und darf Dateien ändern. Der **Assistent** in der App beantwortet Fragen und darf nur lesen. Die KI dahinter ist schon fertig, es fehlt nur das Eingabefeld.
 
 **Beispiel für den Anfang:**
 
@@ -49,46 +51,44 @@ Erkläre mir dieses Projekt in einfachen Worten. Wofür ist es da, und was steck
 Wie starte ich die App und öffne sie im Browser? Erkläre es mir Schritt für Schritt.
 ```
 
-Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“), und probieren Sie z. B.:
+Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“), und lassen Sie den Assistenten bauen:
 
 ```text
-Gestalte die App freundlicher: ruhige Farben, eine moderne Schrift und die Kundenliste als Karten.
+Baue in der App einen „Vertriebs-Assistenten“: ein Eingabefeld mit Knopf „Fragen“ und einem Schalter „Anleitung verwenden“ (zunächst aus). Er nutzt die fertige Frage-Funktion des Servers. Fragen und Antworten bleiben untereinander stehen, jeweils mit dem Hinweis „mit Anleitung“ oder „ohne Anleitung“.
 ```
 
-Nach jeder Änderung im Browser **F5** drücken.
+Nach jeder Änderung im Browser **F5** drücken. Dann eine erste Frage stellen, z. B. „Welche Kunden haben wir?“. Eine Antwort dauert 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex einfach, was Sie sehen („Beim Klick passiert nichts“).
+
+**Ideen für zwischendurch:** Lassen Sie Codex das Aussehen verändern („Gestalte die App freundlicher: ruhige Farben, eine moderne Schrift, die Kundenliste als Karten.“). Versuchen Sie auch andere Design-Änderungen, um die Darstellung der Daten zu verbessern.
 
 > Falls es hakt: Menü **Terminal → Neues Terminal**, dort `npm run dev` eingeben und Enter drücken. Das Fenster offen lassen. Dann im Browser **http://localhost:3000** öffnen.
 
 ---
 
-## Schritt 2 – Ohne und mit Anleitung (40 min)
+## Schritt 2 – Ohne und mit Anleitung (35 min)
 
-**Worum geht es?** Das ist der Kern des Workshops. Dieselbe KI fasst denselben Kunden zweimal zusammen – einmal ohne Vorgaben, einmal mit einer schriftlichen Anleitung (`anleitungen/kunden-uebersicht.md`). Sie vergleichen: Welches Ergebnis ist vollständiger, einheitlicher und nachprüfbar?
+**Worum geht es?** Das ist der Kern des Workshops. Sie stellen dem Assistenten dieselbe Frage zweimal – einmal ohne Vorgaben, einmal mit einer schriftlichen Anleitung. Dann vergleichen Sie: Welche Antwort ist vollständiger, einheitlicher und nachprüfbar?
 
-Damit der Vergleich fair ist, übernimmt die App den Aufruf der KI:
+Der Schalter „Anleitung verwenden“ sorgt für einen fairen Vergleich:
 
-- **Ohne Anleitung:** Die KI bekommt nur die Dateien dieses einen Kunden in einem leeren Ordner. Die Anleitung kann sie dort gar nicht sehen.
-- **Mit Anleitung:** Die KI arbeitet im Projekt und hält sich an die Anleitung.
+- **Aus:** Die KI bekommt nur die Daten (Kunden, Notizen, Marktmeldungen) in einem leeren Ordner. Eine Anleitung kann sie dort gar nicht sehen.
+- **An:** Die KI arbeitet im Projekt und hält sich an die passende Anleitung, hier `anleitungen/kunden-uebersicht.md`.
 
-Die Knöpfe dafür gibt es noch nicht – die lassen Sie Codex bauen. Die KI-Funktion selbst ist im Hintergrund schon fertig.
-
-**Beispiel für den Anfang:**
+**Beispiel für den Anfang:** Diese Frage erst mit Schalter **aus**, dann mit Schalter **an** stellen:
 
 ```text
-Baue in der Kundenansicht zwei Knöpfe: „Zusammenfassung ohne Anleitung“ und „Zusammenfassung mit Anleitung“. Beide nutzen die fertige KI-Zusammenfassung des Servers. Zeige die beiden Ergebnisse nebeneinander.
+Fasse Lahntal Caravanwerk zusammen.
 ```
 
-Dann **Lahntal Caravanwerk** anklicken und beide Knöpfe drücken. Jede Antwort braucht 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex einfach, was Sie sehen („Beim Klick passiert nichts“).
+**Worauf achten?** Gibt es Quellenangaben? Wäre die Gliederung bei jedem Kunden gleich? Erkennt die KI, wann der letzte Besuch war?
 
-**Worauf achten?** Gibt es Quellenangaben? Ist die Gliederung bei jedem Kunden gleich? Erkennt die KI, dass der Kunde überfällig ist?
-
-**Danach: die Anleitung ändern.** Öffnen Sie `anleitungen/kunden-uebersicht.md` und lesen Sie sie. Die Anleitung ist Firmenwissen in Textform. Ändern Sie sie, ändert sich das Ergebnis – ohne dass jemand programmiert. Zum Beispiel:
+**Danach: die Anleitung ändern.** Öffnen Sie `anleitungen/kunden-uebersicht.md` und lesen Sie sie. Die Anleitung ist Firmenwissen in Textform. Ändern Sie sie, ändert sich die Antwort – ohne dass jemand programmiert. Zum Beispiel per Codex:
 
 ```text
 Ergänze in anleitungen/kunden-uebersicht.md einen Abschnitt „Nachhaltigkeit“ (Rezyklatanteil, CO2-Daten, EPD-Anfragen) nach „Wettbewerb“.
 ```
 
-Dann bei **Havelland Kühlfahrzeugbau** erneut „mit Anleitung“ drücken.
+Dann dieselbe Frage ein drittes Mal stellen (Schalter an). Im Verlauf sehen Sie jetzt drei Antworten untereinander.
 
 ---
 
@@ -96,17 +96,17 @@ Dann bei **Havelland Kühlfahrzeugbau** erneut „mit Anleitung“ drücken.
 
 ---
 
-## Schritt 3 – Fragen zu einem Kunden (25 min)
+## Schritt 3 – Eigene Fragen (25 min)
 
-**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Die Anleitung `anleitungen/kundenabfrage.md` sorgt dafür, dass jede Antwort gleich aufgebaut ist und jede Aussage eine Quelle hat. So können Sie der Antwort vertrauen, weil Sie sie in Sekunden prüfen können.
+**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Mit eingeschaltetem Schalter folgt der Assistent der Anleitung `anleitungen/kundenabfrage.md`. Dann ist jede Antwort gleich aufgebaut und jede Aussage hat eine Quelle. So können Sie der Antwort vertrauen, weil Sie sie in Sekunden prüfen können.
 
-**Beispiel für den Anfang:**
+**Beispiel für den Anfang** (im Assistenten, Schalter an):
 
 ```text
-Befolge anleitungen/kundenabfrage.md: Welche Zusagen haben wir Wiesental Reisemobile gemacht, und welche sind noch offen?
+Welche Zusagen haben wir Wiesental Reisemobile gemacht, und welche sind noch offen?
 ```
 
-**Ideen:** Eigene Fragen stellen und eine Quelle öffnen, um sie zu prüfen. Die Anleitung erweitern („Am Ende immer eine Empfehlung für das nächste Gespräch“). Oder Codex ein Fragefeld in die App bauen lassen, das die fertige Frage-Funktion des Servers nutzt.
+**Ideen:** Eigene Fragen stellen und eine Quelle öffnen, um sie zu prüfen. Dieselbe Frage auch einmal ohne Anleitung stellen. Die Anleitung per Codex erweitern („Am Ende immer eine Empfehlung für das nächste Gespräch“).
 
 ---
 

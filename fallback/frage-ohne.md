@@ -1,3 +1,5 @@
+Beispielantwort auf die Frage „Fasse Lahntal Caravanwerk zusammen.“
+
 ## Zusammenfassung: Lahntal Caravanwerk GmbH
 
 Lahntal Caravanwerk ist ein familiengeführter Wohnwagenhersteller aus Mittelhessen (ca. 5.500 Einheiten pro Jahr) und seit 2014 Kunde. Das Unternehmen bezieht die komplette Dachhaut über einen Rahmenvertrag (ca. 95.000 m² pro Jahr, 8,40 €/m² bis Ende 2026).

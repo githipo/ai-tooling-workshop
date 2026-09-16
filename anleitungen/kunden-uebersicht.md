@@ -2,11 +2,11 @@
 
 ## Wofür ist diese Datei?
 
-Diese Datei legt fest, wie die KI eine Kundenübersicht schreibt: welche Abschnitte es gibt, in welcher Reihenfolge, woher die Informationen kommen und in welchem Format das Ergebnis zurückkommt. Die App nutzt diese Datei beim Knopf „Zusammenfassung mit Anleitung“. Wer hier etwas ändert – zum Beispiel einen Abschnitt ergänzt –, ändert das Ergebnis in der App, ganz ohne Programmierung.
+Diese Datei legt fest, wie die KI eine Kundenübersicht schreibt: welche Abschnitte es gibt, in welcher Reihenfolge, woher die Informationen kommen und in welchem Format das Ergebnis zurückkommt. Die KI nutzt sie im Vertriebs-Assistenten der App, wenn nach einer Übersicht oder Zusammenfassung zu einem Kunden gefragt wird und „Anleitung verwenden“ eingeschaltet ist. Wer hier etwas ändert – zum Beispiel einen Abschnitt ergänzt –, ändert das Ergebnis in der App, ganz ohne Programmierung.
 
 ## Aufgabe
 
-Erstelle für genau einen Kunden eine strukturierte Übersicht.
+Erstelle für genau einen Kunden eine strukturierte Übersicht. Die Frage nennt den Kunden, z. B. „Fasse Lahntal Caravanwerk zusammen“.
 
 ## Quellen – in dieser Reihenfolge
 
@@ -35,24 +35,18 @@ Erstelle für genau einen Kunden eine strukturierte Übersicht.
 
 ## Ausgabeformat
 
-Antworte **ausschließlich mit JSON** – kein Text davor oder danach, kein Codeblock. Aufbau:
+Antworte als Text auf Deutsch in diesem Aufbau:
 
-```json
-{
-  "kunde": "k01",
-  "name": "Lahntal Caravanwerk GmbH",
-  "stichtag": "2026-09-16",
-  "abschnitte": [
-    {
-      "titel": "Steckbrief",
-      "punkte": [
-        { "text": "Kundenklasse A – Kontakt alle 14 Tage, Besuch alle 60 Tage", "quelle": "kunden/k01-lahntal-caravanwerk.md" }
-      ]
-    }
-  ]
-}
+```
+# Kundenübersicht: <Kundenname> (Stand <TT.MM.JJJJ>)
+
+## Steckbrief
+- <Aussage> (Quelle: <Dateipfad>)
+
+## Beziehung & Ansprechpartner
+- …
 ```
 
-- `abschnitte` enthält alle Abschnitte von oben, in derselben Reihenfolge, `titel` genau wie oben geschrieben.
-- Jeder Punkt hat `text` und `quelle`. Stützt sich ein Punkt auf mehrere Dateien, trenne sie mit Komma.
-- Hat ein Abschnitt keine Information: ein Punkt mit `"text": "keine Information"` und `"quelle": ""`.
+- Alle Abschnitte von oben, in derselben Reihenfolge, Überschriften genau wie oben geschrieben.
+- Stützt sich ein Punkt auf mehrere Dateien, trenne sie mit Komma.
+- Hat ein Abschnitt keine Information: „- keine Information“.
