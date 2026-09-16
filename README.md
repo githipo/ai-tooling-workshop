@@ -2,14 +2,14 @@
 
 Heute steuern Sie einen KI-Agenten (**Codex**) nur mit Ihren eigenen Worten. Codex baut damit eine kleine App, die Kundendaten, Gesprächsnotizen und Marktmeldungen zusammenführt. Selbst programmieren müssen Sie nicht.
 
-**Die Kernbotschaft:** Gute Ergebnisse entstehen nicht durch das „beste Modell“, sondern durch **Struktur** – klare Ordner und schriftliche Anleitungen, an die sich die KI hält.
+**Die Kernbotschaft:** Gute Ergebnisse entstehen nicht durch das „beste Modell“, sondern durch **Struktur** – klare Ordner und kurze Textdateien mit dem wichtigen Wissen, an die sich die KI hält.
 
 > Alle Firmen, Personen und Zahlen hier sind **frei erfunden**. Bitte keine echten Kundendaten eingeben.
 
 ## So arbeiten Sie heute
 
 - **Codex öffnen:** In VS Code links auf das Codex-Symbol klicken. Für jeden Schritt einen **neuen Chat** beginnen.
-- **Prompts:** Zu jedem Schritt gibt es ein Beispiel für den Anfang. Kopieren Sie es oder schreiben Sie in eigenen Worten – und fragen Sie nach, wenn Ihnen etwas unklar ist. Codex erklärt gern.
+- **Prompts:** Zu jedem Schritt steht, *was* Sie von Codex brauchen, plus ein kurzes Beispiel für den Anfang. Formulieren Sie ruhig in eigenen Worten – und fragen Sie nach, wenn Ihnen etwas unklar ist.
 - **Keine Angst vor Fehlern:** Die technischen Teile der App sind für Codex gesperrt, und alles lässt sich zurücksetzen.
 
 | Ordner | Inhalt |
@@ -24,83 +24,79 @@ Heute steuern Sie einen KI-Agenten (**Codex**) nur mit Ihren eigenen Worten. Cod
 
 ---
 
-## Schritt 0 – Umschauen (15 min)
+## Schritt 0 – Umschauen (10 min)
 
 **Worum geht es?** Bevor Codex etwas verändert, lernen Sie das Projekt kennen – so, wie Sie einen neuen Kollegen fragen würden. Sie sehen: Alles besteht aus wenigen, lesbaren Textdateien. Und Codex kennt das Projekt schon, weil `AGENTS.md` ihm den Hintergrund liefert.
 
-Tipp: Stellen Sie Codex für diesen Schritt auf **„nur lesen“** (je nach Version „Chat“ oder „Read Only“). Dann kann er nichts ändern.
+**Was Sie fragen:** wofür das Projekt da ist, was in den Ordnern steckt, was in `AGENTS.md` steht. Stellen Sie Codex dafür auf **„nur lesen“** (je nach Version „Chat“ oder „Read Only“).
 
 **Beispiel für den Anfang:**
 
 ```text
-Erkläre mir dieses Projekt in einfachen Worten. Wofür ist es da, und was steckt in den Ordnern?
+Erkläre mir dieses Projekt in einfachen Worten.
 ```
-
-**Ideen zum Weiterfragen:** Was kann die App schon – und was könnte sie, zeigt es aber noch nicht? Was steht in `AGENTS.md`? Welche Kunden sind A-Kunden?
 
 ---
 
 ## Schritt 1 – App starten und Assistenten bauen (20 min)
 
-**Worum geht es?** Die App läuft nur auf Ihrem Laptop. Die Adresse `localhost` im Browser bedeutet „dieser Computer“. Bisher zeigt die App nur Rohdaten. Sie lassen Codex ein Eingabefeld einbauen: den **Vertriebs-Assistenten**. Dort stellt der Vertrieb später seine Fragen.
-
-Die KI hinter dem Assistenten ist schon fertig, es fehlt nur das Eingabefeld.
+**Worum geht es?** Die App läuft nur auf Ihrem Laptop – `localhost` im Browser heißt „dieser Computer“. Bisher zeigt sie nur Rohdaten. Sie machen daraus Ihr Werkzeug: erst das Aussehen, dann das Wichtigste – ein Eingabefeld, den **Vertriebs-Assistenten**. Die KI dahinter ist im Server schon fertig, es fehlt nur das Feld.
 
 > **INFO:** Der **Vertriebs-Assistent** in der App darf nur lesen – er beantwortet Fragen, speichert aber nichts. Alles, was Dateien anlegt oder ändert (Design, Gesprächsnotizen, Anleitungen), machen Sie im **Codex-Chat** hier in VS Code.
 
-**Beispiel für den Anfang:**
+**1. App starten.** Lassen Sie sich von Codex erklären, wie das geht:
 
 ```text
-Wie starte ich die App und öffne sie im Browser? Erkläre es mir Schritt für Schritt.
+Wie starte ich die App?
 ```
-
-Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“), und lassen Sie den Assistenten bauen!
-
-Versuchen Sie zu Beginn, mit Codex das Design nutzerfreundlicher zu gestalten. Prompten Sie z.B. 
-
-```text
-Mach das Interface benutzerfreundlicher. Verwende warme Farben für die Buttons und formattiere die Datenauflistung mit visuellen Elementen, sodass die Kundendaten leichter zu lesen sind.
-```
-
-Als nächstes wollen wir ein Chat Interface auf der Seite bauen. Damit das funktioniert, haben wir zu Beginn den lokalen Server mit Codex zusammen gestartet. Dieses Chat Interface soll sich zu server.js verbinden, der Codex im Hintergrund aufruft. 
-
-```text
-Baue in der App einen „Vertriebs-Assistenten“: ein Eingabefeld mit Knopf „Fragen“. Er nutzt die fertige Frage-Funktion des Servers. Fragen und Antworten bleiben untereinander stehen.
-```
-
-Nach jeder Änderung im Browser **F5** drücken. Dann eine erste Frage stellen, z. B. „Welche Kunden haben wir?“. Eine Antwort dauert 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex einfach, was Sie sehen („Beim Klick passiert nichts“).
 
 > Falls es hakt: Menü **Terminal → Neues Terminal**, dort `npm run dev` eingeben und Enter drücken. Das Fenster offen lassen. Dann im Browser **http://localhost:3000** öffnen.
+
+Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“). Nach jeder Änderung im Browser **F5** drücken.
+
+**2. Design.** Beschreiben Sie, was Ihnen am Aussehen wichtig ist: Farben, Schrift, wie die Kundendaten übersichtlicher werden.
+
+```text
+Mach die App übersichtlicher und freundlicher.
+```
+
+**3. Vertriebs-Assistent – der wichtigste Baustein.** Das muss Codex bauen:
+
+- ein **Eingabefeld** mit einem Knopf **„Fragen“**
+- die Frage geht an die **fertige Frage-Funktion des Servers** (Codex findet sie in `AGENTS.md`)
+- Fragen und Antworten bleiben als **Verlauf untereinander** stehen – das brauchen Sie in Schritt 2 zum Vergleichen
+
+```text
+Baue einen Vertriebs-Assistenten: ein Eingabefeld, das die fertige Frage-Funktion des Servers nutzt.
+```
+
+Dann eine erste Frage stellen, z. B. „Welche Kunden haben wir?“. Eine Antwort dauert 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex, was Sie sehen („Beim Klick passiert nichts“).
 
 ---
 
 ## Schritt 2 – Ohne und mit Anleitung (35 min)
 
-**Worum geht es?** Das ist der Kern des Workshops. Sie stellen dem Assistenten dieselbe Frage zweimal – erst ohne, dann mit einer schriftlichen Anleitung. Dann vergleichen Sie: Welche Antwort ist vollständiger, einheitlicher und nachprüfbar?
+**Worum geht es?** Das ist der Kern des Workshops. Sie stellen dem Assistenten dieselbe Frage zweimal – erst ohne, dann mit einer schriftlichen Anleitung – und vergleichen: Welche Antwort ist vollständiger, einheitlicher und nachprüfbar?
 
-Der Assistent nutzt eine Anleitung, sobald eine passende im Ordner `anleitungen/` liegt. Noch ist der Ordner leer – er arbeitet also ohne.
+Der Assistent nutzt eine Anleitung, sobald eine passende im Ordner `anleitungen/` liegt. Noch ist der Ordner leer.
 
-**1. Ohne Anleitung fragen:**
+**1. Ohne Anleitung fragen** (im Assistenten):
 
 ```text
 Fasse Lahntal Caravanwerk zusammen.
 ```
 
-**2. Anleitung einfügen.** Öffnen Sie `vorlagen/kunden-uebersicht.md` und lesen Sie sie: Das ist Firmenwissen in Textform. Dann kopieren Sie die Datei nach `anleitungen/` – in VS Code per Kopieren und Einfügen oder per Codex:
+**2. Anleitung einfügen.** Lesen Sie `vorlagen/kunden-uebersicht.md` – das ist Firmenwissen in Textform. Kopieren Sie die Datei dann nach `anleitungen/`: in VS Code per Kopieren und Einfügen oder per Codex („Kopiere die Vorlage kunden-uebersicht nach anleitungen/“).
+
+**3. Dieselbe Frage noch einmal stellen** und vergleichen: Gibt es Quellenangaben? Wäre die Gliederung bei jedem Kunden gleich? Erkennt die KI, wann der letzte Besuch war?
+
+**4. Anleitung ändern.** Ändern Sie die Anleitung, ändert sich die Antwort – ohne dass jemand programmiert. Überlegen Sie, was in der Übersicht fehlt, und lassen Sie Codex es ergänzen, zum Beispiel einen Abschnitt zu Nachhaltigkeit:
 
 ```text
-Kopiere vorlagen/kunden-uebersicht.md nach anleitungen/.
+Ergänze in der Anleitung kunden-uebersicht einen Abschnitt „Nachhaltigkeit“.
 ```
 
-**3. Dieselbe Frage noch einmal stellen** und die beiden Antworten vergleichen. Gibt es Quellenangaben? Wäre die Gliederung bei jedem Kunden gleich? Erkennt die KI, wann der letzte Besuch war?
-
-**Danach: die Anleitung ändern.** Ändern Sie die Anleitung, ändert sich die Antwort – ohne dass jemand programmiert. Zum Beispiel per Codex:
-
-```text
-Ergänze in anleitungen/kunden-uebersicht.md einen Abschnitt „Nachhaltigkeit“ (Rezyklatanteil, CO2-Daten, EPD-Anfragen) nach „Wettbewerb“.
-```
-
-Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf sehen Sie jetzt drei Antworten untereinander.
+Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf stehen jetzt drei Antworten untereinander.
 
 ---
 
@@ -108,64 +104,91 @@ Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf sehen Sie jetzt drei Ant
 
 ---
 
-## Schritt 3 – Eigene Fragen (25 min)
+## Schritt 3 – Eigene Fragen (20 min)
 
-**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Dafür gibt es die Anleitung `vorlagen/kundenabfrage.md`: Mit ihr ist jede Antwort gleich aufgebaut und jede Aussage hat eine Quelle. So können Sie der Antwort vertrauen, weil Sie sie in Sekunden prüfen können.
+**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Die Vorlage `vorlagen/kundenabfrage.md` sorgt dafür, dass jede Antwort gleich aufgebaut ist und jede Aussage eine Quelle hat – so können Sie sie in Sekunden prüfen.
 
-Kopieren Sie zuerst `vorlagen/kundenabfrage.md` nach `anleitungen/`. **Beispiel für den Anfang** (im Assistenten):
+**Was Sie tun:** `vorlagen/kundenabfrage.md` nach `anleitungen/` kopieren, dann im Assistenten Fragen aus Ihrem Alltag stellen und eine Quelle öffnen, um die Antwort zu prüfen.
+
+**Beispiel für den Anfang** (im Assistenten):
 
 ```text
-Welche Zusagen haben wir Wiesental Reisemobile gemacht, und welche sind noch offen?
+Was haben wir Wiesental Reisemobile zugesagt?
 ```
 
-**Ideen:** Eigene Fragen stellen und eine Quelle öffnen, um sie zu prüfen. Die Anleitung per Codex erweitern („Am Ende immer eine Empfehlung für das nächste Gespräch“).
+Passt Ihnen der Aufbau der Antworten nicht, ändern Sie die Anleitung per Codex – z. B. „Am Ende immer eine Empfehlung für das nächste Gespräch“.
 
 ---
 
-## Schritt 4 – Nächste Schritte (40 min)
+## Schritt 4 – Nächste Schritte (35 min)
 
 **Worum geht es?** Die KI soll vorschlagen, um welche Kunden sich der Vertrieb zuerst kümmern sollte. Wie sie priorisiert, steht als einfache Punkteliste in `vorlagen/next-best-action.md`. Diese Logik gehört damit den Fachleuten, nicht der IT: Wer eine Zahl ändert oder eine neue Gesprächsnotiz anlegt, verändert die Empfehlungen.
 
-Kopieren Sie zuerst `vorlagen/next-best-action.md` nach `anleitungen/`. **Beispiel für den Anfang:**
+**1. Anleitung einfügen:** `vorlagen/next-best-action.md` nach `anleitungen/` kopieren.
+
+**2. Reiter bauen.** Das muss Codex bauen:
+
+- einen zweiten Reiter **„Nächste Schritte“** mit einem Knopf **„Aktualisieren“**
+- der Knopf holt die **fertigen Empfehlungen des Servers**
+- die Liste zeigt je Kunde Priorität, Punkte, Thema, Ansprechpartner, Begründung und Quellen
 
 ```text
-Baue oben in der App einen zweiten Reiter „Nächste Schritte“ mit einem Knopf „Aktualisieren“. Er nutzt die fertigen Empfehlungen des Servers und zeigt sie als Liste mit Priorität, Punkten, Kunde, Thema, Ansprechpartner, Begründung und Quellen.
+Baue einen zweiten Reiter „Nächste Schritte“, der die fertigen Empfehlungen des Servers zeigt.
 ```
 
 „Aktualisieren“ dauert 1 bis 3 Minuten.
 
-**Danach selbst an der Logik drehen**, zum Beispiel:
+**3. An der Logik drehen** – nach jeder Änderung erneut „Aktualisieren“ und die Reihenfolge vergleichen:
 
-- Gewichtung ändern – in `anleitungen/next-best-action.md` im Abschnitt „Gewichtung – hier anpassen“ direkt in der Datei oder per Prompt („Ein Wettbewerbssignal zählt 40 statt 25 Punkte.“)
-- Eine neue Gesprächsnotiz anlegen lassen – im Codex-Chat, nicht im Assistenten:
+- **Gewichtung ändern:** in `anleitungen/next-best-action.md` im Abschnitt „Gewichtung – hier anpassen“, direkt in der Datei oder per Codex („Ein Wettbewerbssignal zählt 40 statt 25 Punkte.“)
+- **Neue Gesprächsnotiz anlegen** (im Codex-Chat). Beschreiben Sie das Gespräch so, wie Sie es einem Kollegen erzählen würden:
 
   ```text
-  Lege eine neue Gesprächsnotiz an: Heute Telefonat mit Tomasz Wójcik von Odra Panele. Die zweite Paneel-Linie ist beschlossen, Start April 2027. Sie brauchen in 10 Tagen ein Angebot für ca. 63.000 m² pro Jahr. Ein anderer Anbieter aus Polen hat bereits ein Angebot abgegeben.
+  Lege eine Gesprächsnotiz an: Heute Telefonat mit Tomasz Wójcik von Odra Panele. Die zweite Paneel-Linie ist beschlossen, Start April 2027. Sie brauchen in 10 Tagen ein Angebot für ca. 63.000 m² pro Jahr. Ein anderer Anbieter aus Polen hat bereits ein Angebot abgegeben.
   ```
-
-Nach jeder Änderung erneut „Aktualisieren“: Wie verändert sich die Reihenfolge?
 
 ---
 
-## Schritt 5 (optional) – Diktat
+## Schritt 5 – Freies Experimentieren (15 min)
 
-**Worum geht es?** Notizen entstehen oft unterwegs und gesprochen. Die KI macht daraus eine saubere, einheitliche Gesprächsnotiz, die sofort in die Empfehlungen einfließt. Diktieren können Sie mit **Windows+H** direkt ins Codex-Eingabefeld. Ein Beispiel für ein unbearbeitetes Diktat liegt in `eingang/diktat-wiesental.txt`.
+**Worum geht es?** Jetzt bauen Sie Ihr eigenes Stück Firmenwissen. Die Faustregel:
+
+- **Was die KI wissen soll**, gehört in eine kurze Textdatei (Markdown, `.md`) – mit Überschriften, Stichpunkten, Zahlen.
+- **Wie die KI arbeiten soll**, gehört in eine Anleitung in `anleitungen/`.
+- **Wo was liegt**, gehört in `AGENTS.md` – dann findet die KI es sicher.
+
+**So gehen Sie vor:**
+
+1. Im Codex-Chat eine Datei anlegen lassen (oder selbst schreiben).
+2. Codex bitten, den neuen Ordner in `AGENTS.md` einzutragen.
+3. Im Assistenten eine passende Frage stellen – und prüfen, ob die Antwort Ihre Datei nutzt.
 
 **Beispiel für den Anfang:**
 
 ```text
-Mach aus eingang/diktat-wiesental.txt eine Gesprächsnotiz im gleichen Aufbau wie die anderen (Wiesental Reisemobile, heute, Besuch bei Thomas Brückner). Erfinde nichts dazu.
+Lege eine Datei wissen/preise.md mit einer erfundenen Preisliste für unsere drei wichtigsten Produkte an (Preis pro m², Lieferzeit, Mengenrabatt). Trage den Ordner wissen/ in AGENTS.md ein.
 ```
+
+Danach im Assistenten: „Was wäre unser Angebot für Odra Panele?“
+
+**Ideen:**
+
+- **Wissen:** Produktdatenblätter, Wettbewerber-Steckbriefe, Liefer- und Zahlungsbedingungen, ein Glossar mit Abkürzungen
+- **Anleitungen:** Besuchsvorbereitung (Ziel, drei Fragen, offene Punkte), E-Mail-Entwurf an einen Kunden, Wochenbericht für die Geschäftsführung, Checkliste vor einem Angebot
+- **Regeln in `AGENTS.md`:** Tonfall („kurz, Sie-Form“), Firmenregeln („Preise nie ohne Freigabe nennen“) – und beobachten, wie sich die Antworten ändern
+- **Diktat:** Mit **Windows+H** direkt ins Codex-Eingabefeld sprechen. Oder aus `eingang/diktat-wiesental.txt` eine Gesprächsnotiz machen lassen – und danach „Nächste Schritte“ aktualisieren
+- **App:** eine Ampel für überfällige Kunden, ein Filter nach Außendienst-Mitarbeiter, Beispielfragen zum Anklicken im Assistenten
+- **Gegenprobe:** eine eigene Datei wieder löschen und dieselbe Frage noch einmal stellen
 
 ---
 
 ## Abschluss
 
-1. **Struktur schlägt Modell.** Klare Ordner und Anleitungen machen Ergebnisse gut, einheitlich und prüfbar.
+1. **Struktur schlägt Modell.** Klare Ordner und kurze Textdateien machen Ergebnisse gut, einheitlich und prüfbar.
 2. **Anleitungen sind Firmenwissen.** Sie sind lesbar, änderbar und gehören den Fachleuten.
 3. **Quellen schaffen Vertrauen.** Jede Aussage lässt sich in Sekunden nachprüfen.
 
-**Zum Weiterdenken:** Welches Wissen steckt bei uns nur in Köpfen und könnte eine Anleitung werden? Wo wäre ein erster kleiner Versuch sinnvoll?
+**Zum Weiterdenken:** Welches Wissen steckt bei uns nur in Köpfen und könnte eine Textdatei werden? Wo wäre ein erster kleiner Versuch sinnvoll?
 
 > Datenschutz: Codex schickt Dateiinhalte zur Verarbeitung an OpenAI. Mit echten Kundendaten erst arbeiten, wenn das mit IT und Datenschutz geklärt ist.
 

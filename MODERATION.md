@@ -6,14 +6,14 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 
 | Start | Block | Dauer | Bei Zeitnot |
 |---|---|---|---|
-| 0:00 | Begrüßung und Schritt 0 – Umschauen | 15 min | Nur den Beispiel-Prompt |
-| 0:15 | Schritt 1 – App starten und Assistenten bauen | 20 min | Bau am Beamer vormachen oder zu `stufe-1-fertig` springen |
-| 0:35 | Schritt 2 – Ohne und mit Anleitung | 35 min | Anleitung nicht ändern, nur vergleichen |
-| 1:10 | Pause | 10 min | |
-| 1:20 | Schritt 3 – Eigene Fragen | 25 min | Nur den Beispiel-Prompt |
-| 1:45 | Schritt 4 – Nächste Schritte | 40 min | Zu `stufe-4-start` springen, nur die Gewichtung ändern |
+| 0:00 | Begrüßung und Schritt 0 – Umschauen | 10 min | Nur den Beispiel-Prompt |
+| 0:10 | Schritt 1 – App starten und Assistenten bauen | 20 min | Design überspringen; Bau am Beamer vormachen oder zu `stufe-1-fertig` springen |
+| 0:30 | Schritt 2 – Ohne und mit Anleitung | 35 min | Anleitung nicht ändern, nur vergleichen |
+| 1:05 | Pause | 10 min | |
+| 1:15 | Schritt 3 – Eigene Fragen | 20 min | Nur den Beispiel-Prompt |
+| 1:35 | Schritt 4 – Nächste Schritte | 35 min | Zu `stufe-4-start` springen, nur die Gewichtung ändern |
+| 2:10 | Schritt 5 – Freies Experimentieren | 15 min | Eine Idee gemeinsam am Beamer |
 | 2:25 | Abschluss | 5 min | |
-| – | Schritt 5 – Diktat | – | Nur wenn eine Gruppe früher fertig ist |
 
 ## Was in den Schritten passieren soll
 
@@ -50,7 +50,12 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
   - **Notiz zu Odra Panele:** Der C-Kunde steigt von „mittel“ auf „hoch“.
 - Jede erfolgreiche Aktualisierung überschreibt `fallback/next-best-action.json`. So bleibt das Beispiel aktuell.
 
-**Schritt 5:** Windows+H braucht ein Mikrofon und die Einstellung „Online-Spracherkennung“.
+**Schritt 5:**
+
+- Ziel: Die Teilnehmenden legen selbst eine Wissensdatei oder Anleitung an und sehen, wie der Assistent sie nutzt.
+- Bewährt: `wissen/preise.md` anlegen und in `AGENTS.md` eintragen lassen, dann „Was wäre unser Angebot für Odra Panele?“ fragen. Im Test hat die KI die Datei auch ohne Eintrag gefunden; mit Eintrag ist es verlässlicher.
+- Windows+H braucht ein Mikrofon und die Einstellung „Online-Spracherkennung“.
+- Beim Zurücksetzen nach dem Workshop entfernt `git clean -fd` auch die neuen Ordner.
 
 ## Ohne und mit Anleitung
 

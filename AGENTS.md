@@ -13,6 +13,7 @@ Die Teilnehmenden sind Führungskräfte, keine Programmierer. Sie steuern dich n
 - `markt/` – Markt- und Wettbewerbsmeldungen
 - `anleitungen/` – Arbeitsanleitungen, die die KI im Vertriebs-Assistenten befolgt. Am Anfang leer; die Nutzer kopieren im Workshop Dateien aus `vorlagen/` hinein.
 - `vorlagen/` – fertige Anleitungen zum Einfügen
+- Weitere Ordner mit Firmenwissen (z. B. `wissen/`) legen die Nutzer im Workshop selbst an und tragen sie hier ein.
 - `eingang/` – unsortierte Rohtexte, z. B. Diktate
 - `fallback/` – vorbereitete Beispielergebnisse, falls die KI nicht antwortet
 - `public/index.html` – die Oberfläche der App (HTML, CSS und JavaScript in einer Datei)
@@ -35,6 +36,7 @@ Alle Firmen, Personen, Zahlen und Meldungen sind **frei erfunden**. Es gibt kein
 
 Solche Fragen kommen aus dem Chat oder aus dem Vertriebs-Assistenten der App (dort startet der Server dich im Hintergrund).
 
+- Nutze alle passenden Dateien als Quelle, auch die Wissensordner aus der Liste oben.
 - Liegt in `anleitungen/` eine passende Anleitung, befolge sie.
 - Liegt dort keine passende Anleitung, antworte ohne. Nutze dafür nichts aus `vorlagen/` – sonst funktioniert der Vergleich ohne/mit Anleitung nicht.
 - Stichtag für alle Auswertungen ist der 16.09.2026 (darauf sind die Beispieldaten ausgelegt).
@@ -45,7 +47,7 @@ Solche Fragen kommen aus dem Chat oder aus dem Vertriebs-Assistenten der App (do
 - Erkläre in einfachem Deutsch, was du tust und warum – ohne Fachjargon. Fachbegriffe kurz erklären.
 - Mache kleine, nachvollziehbare Änderungen und sage am Ende, welche Dateien du geändert hast (nur wenn du etwas geändert hast).
 - Lösche keine Dateien in `kunden/`, `gespraeche/`, `markt/`, `eingang/` und `fallback/`. Neue Dateien anlegen ist erlaubt.
-- Änderungen gehören nach `public/index.html` und `anleitungen/`; neue Notizen nach `gespraeche/`.
+- Änderungen gehören nach `public/index.html` und `anleitungen/`, neue Notizen nach `gespraeche/`, eigenes Firmenwissen in neue Ordner wie `wissen/`. Neue Ordner in `AGENTS.md` unter „Ordner“ eintragen.
 - Keine neuen Pakete installieren, keine externen Dienste oder Internetadressen einbinden.
 - Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter). Erkläre stattdessen: in VS Code Menü „Terminal → Neues Terminal“, `npm run dev` eingeben, Enter, Fenster offen lassen, dann http://localhost:3000 im Browser öffnen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden (F5).
 - Kopiere Dateien aus `vorlagen/` nach `anleitungen/` nur, wenn der Prompt darum bittet. Der Vergleich ohne/mit Anleitung hängt davon ab, dass `anleitungen/` bis dahin leer bleibt.
@@ -73,6 +75,7 @@ Bei Fehlern: HTTP-Status ungleich 200 und `{ fehler }` mit einer deutschen Meldu
 
 Beim Einbau in `public/index.html`:
 
+- Der Vertriebs-Assistent zeigt Fragen und Antworten als Verlauf untereinander (neueste unten), damit man Antworten vergleichen kann.
 - KI-Aufrufe dauern 30 Sekunden bis 3 Minuten. Zeige eine Ladeanzeige mit mitlaufenden Sekunden und sperre den Knopf so lange.
 - Bei `fallback: true` einen gut sichtbaren Hinweis zeigen („Beispielergebnis – KI nicht erreichbar“) samt `grund`.
 - `text` ist Fließtext mit Markdown-Zeichen (`#`, `**`, `-`). Mit erhaltenen Zeilenumbrüchen anzeigen; Überschriften und Fettdruck dürfen hervorgehoben werden. Ist `json` leer, `text` anzeigen.
