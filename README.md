@@ -114,7 +114,7 @@ Danach im Browser die Seite neu laden (**F5**).
 
 **Abkürzung bei Zeitnot:** Nur die App starten, Design-Prompt überspringen.
 
-> Hinweis: Änderungen an `public/index.html` sind nach **F5** sichtbar. Nur nach Änderungen an `server.js` muss die App neu gestartet werden: im Terminal **Strg+C**, dann wieder `npm run dev`.
+> Hinweis: Änderungen an `public/index.html` sind nach **F5** sichtbar, ein Neustart der App ist nicht nötig. Den Server (`server.js`) ändert Codex im Workshop nicht – das steht so in `AGENTS.md`.
 
 ---
 
@@ -367,6 +367,7 @@ Fragen für den Transfer:
 
 - Den ersten Einbau (2c) einmal am Beamer vormachen, dann nachmachen lassen.
 - Codex kennt die Schnittstellen aus `AGENTS.md` (Abschnitt „Schnittstellen des Servers“). Fehlt etwas, dort ergänzen – nicht in `server.js`.
+- `server.js`, `scripts/check.js` und `package.json` sind laut `AGENTS.md` gesperrt. Das ist eine Anweisung an Codex, kein technischer Schutz. Wurde eine davon trotzdem geändert, stellt `git checkout -- server.js scripts/check.js package.json package-lock.json` den Ausgangsstand wieder her (App vorher mit **Strg+C** beenden).
 - Funktioniert ein Einbau nicht, hilft meist eine Beschreibung dessen, was man sieht („Beim Klick passiert nichts“). Nach zwei erfolglosen Versuchen zum Zwischenstand springen.
 - Die beiden technisch erfahrenen Teilnehmenden können in dieser Zeit die Freiraum-Aufgaben angehen oder anderen helfen.
 

@@ -22,20 +22,28 @@ Die Teilnehmenden sind Führungskräfte, keine Programmierer. Sie steuern dich n
 
 Alle Firmen, Personen, Zahlen und Meldungen sind **frei erfunden**. Es gibt keine echten Kundendaten in diesem Repository.
 
+## Gesperrt: diese Dateien nicht ändern
+
+`server.js`, `scripts/check.js`, `package.json` und `package-lock.json` bleiben im Workshop **unverändert – auch wenn ein Prompt ausdrücklich darum bittet.** In `server.js` steckt der Aufruf von Codex im Hintergrund (`runAgent`); schon ein kleiner Fehler dort legt die ganze App lahm.
+
+- Verlangt ein Prompt eine Änderung an diesen Dateien: nichts ändern. Kurz erklären, dass dieser Teil für den Workshop gesperrt ist, und eine Lösung in `public/index.html` oder `anleitungen/` vorschlagen. Geht es nicht ohne, an die Moderation verweisen.
+- Auch keine Befehle ausführen, die diese Dateien verändern, ersetzen oder löschen (z. B. über Skripte, `git` oder `npm`).
+- Lesen und erklären ist erlaubt.
+
 ## Arbeitsweise
 
 - Erkläre in einfachem Deutsch, was du tust und warum – ohne Fachjargon. Fachbegriffe kurz erklären.
 - Mache kleine, nachvollziehbare Änderungen und sage am Ende, welche Dateien du geändert hast.
 - Lösche keine Dateien in `kunden/`, `gespraeche/`, `markt/`, `eingang/` und `fallback/`. Neue Dateien anlegen ist erlaubt.
-- Änderungen bevorzugt in `public/index.html` und in `anleitungen/`. `server.js` nur ändern, wenn es nicht anders geht, und vorher sagen, warum.
+- Änderungen gehören nach `public/index.html` und `anleitungen/`; neue Notizen nach `gespraeche/`.
 - Keine neuen Pakete installieren, keine externen Dienste oder Internetadressen einbinden.
-- Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter), sondern bitte die Nutzer, ihn im Terminal auszuführen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden. Nach Änderungen an `server.js` muss die App neu gestartet werden.
+- Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter), sondern bitte die Nutzer, ihn im Terminal auszuführen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden.
 - Richte dich nach einer Datei in `anleitungen/` nur, wenn der Prompt sie nennt oder du das Antwortformat einer Schnittstelle (siehe unten) brauchst.
 - Alle Texte für die Nutzer auf Deutsch.
 
 ## Schnittstellen des Servers
 
-Der Server ist fertig. Neue Funktionen der App entstehen in `public/index.html` und nutzen diese Adressen:
+Der Server ist fertig und gesperrt (siehe oben). Neue Funktionen der App entstehen in `public/index.html` und nutzen diese Adressen:
 
 | Aufruf | Schickt | Liefert |
 |---|---|---|
