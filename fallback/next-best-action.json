@@ -1,0 +1,83 @@
+[
+  {
+    "kunde": "Lahntal Caravanwerk GmbH",
+    "ansprechpartner": "Jana Reuter (Leitung Einkauf)",
+    "thema": "8D-Report bis 25.09. liefern und Seitenwand-Angebot mit Rezyklat-Variante vorbereiten",
+    "prioritaet": "hoch",
+    "punkte": 105,
+    "begruendung": "Klasse A (30) + Kontakt nicht überfällig (0) + offene Reklamation Farbabweichung (25) + italienischer Wettbewerber 9 % günstiger (25) + Marktmeldung Brianza Plastica / Caravanmarkt (10) + offene Zusage 8D-Report am 25.09. (15)",
+    "quellen": ["kunden/k01-lahntal-caravanwerk.md", "gespraeche/2026-09-08_k01_nachfassen-8d.md", "gespraeche/2026-08-29_k01_messe-seitenwand.md", "markt/2026-09-01_brianza-plastica-rezyklat.md"]
+  },
+  {
+    "kunde": "Wiesental Reisemobile GmbH",
+    "ansprechpartner": "Thomas Brückner (Geschäftsführer Technik)",
+    "thema": "Werkstermin der Anwendungstechnik zur Delamination sofort festmachen und Antwort zum Zahlungsziel geben",
+    "prioritaet": "hoch",
+    "punkte": 105,
+    "begruendung": "Klasse A (30) + Kontakt 43 Tage überfällig (25) + offene Reklamation Delamination (25) + kein Wettbewerbssignal (0) + Marktmeldung Caravanmarkt (10) + überschrittene Zusagen Werksbesuch und Zahlungsziel (15)",
+    "quellen": ["kunden/k02-wiesental-reisemobile.md", "gespraeche/2026-07-21_k02_reklamation-delamination.md", "gespraeche/2026-05-20_k02_zahlungsziel.md", "markt/2026-09-04_caravanmarkt-europa.md"]
+  },
+  {
+    "kunde": "Kessler & Voigt Aufbauten GmbH",
+    "ansprechpartner": "Sven Kessler (Geschäftsführer)",
+    "thema": "Preisangebot mit Mengenstaffel vorlegen, bevor ab Q4 die Hälfte der Menge abwandert",
+    "prioritaet": "hoch",
+    "punkte": 100,
+    "begruendung": "Klasse B (20) + Kontakt 54 Tage überfällig (30) + keine offene Reklamation (0) + türkischer Anbieter 11 % günstiger (25) + Marktmeldung Erholung LKW-Aufbauten (10) + Zusage Rückmeldung bis Ende Juli überschritten (15)",
+    "quellen": ["kunden/k04-kessler-voigt-aufbauten.md", "gespraeche/2026-06-24_k04_preisdruck.md", "markt/2026-06-25_trailer-erholung.md"]
+  },
+  {
+    "kunde": "Havelland Kühlfahrzeugbau GmbH",
+    "ansprechpartner": "Dirk Sommer (Einkaufsleiter)",
+    "thema": "Angebot für Ausschreibung inkl. Bodenplatte bis 30.09. abgeben, Rezyklat-Muster und CO2-Daten klären",
+    "prioritaet": "hoch",
+    "punkte": 80,
+    "begruendung": "Klasse A (30) + Kontakt nicht überfällig (0) + keine Reklamation (0) + anderer Lieferant bietet Außenhaut mit 25 % Rezyklat und EPD (25) + Marktmeldung Ausschreibung 300 Kühlauflieger (10) + Angebot fällig am 30.09. (15)",
+    "quellen": ["kunden/k03-havelland-kuehlfahrzeugbau.md", "gespraeche/2026-09-02_k03_ausschreibung-flotte.md", "gespraeche/2026-06-16_k03_rezyklat-anfrage.md", "markt/2026-06-25_trailer-erholung.md"]
+  },
+  {
+    "kunde": "Odra Panele Sp. z o.o.",
+    "ansprechpartner": "Tomasz Wójcik (Einkaufsleiter)",
+    "thema": "Nachfragen, ob die Entscheidung zur zweiten Paneel-Linie gefallen ist",
+    "prioritaet": "mittel",
+    "punkte": 50,
+    "begruendung": "Klasse C (10) + Kontakt 94 Tage überfällig (30, Höchstwert) + keine Reklamation (0) + kein Wettbewerbssignal (0) + Marktmeldung OPTIPLAN/POLYDET-Kapazität in Polen (10) + keine offene Zusage (0)",
+    "quellen": ["kunden/k07-odra-panele.md", "gespraeche/2026-04-15_k07_kapazitaet.md", "markt/2026-05-28_optiplan-polydet-kapazitaet.md"]
+  },
+  {
+    "kunde": "Van Dijkhuizen Opleggers B.V.",
+    "ansprechpartner": "Sanne Bakker (Einkauf)",
+    "thema": "Antwort zum Skonto geben und offene Rechnung vom 10.07. ansprechen",
+    "prioritaet": "mittel",
+    "punkte": 45,
+    "begruendung": "Klasse B (20) + Kontakt nicht überfällig (0) + keine Reklamation (0) + kein Wettbewerbssignal (0) + Marktmeldung Trailer-Erholung (10) + Zusage Skonto-Antwort bis Mitte September überschritten (15)",
+    "quellen": ["kunden/k05-van-dijkhuizen-opleggers.md", "gespraeche/2026-08-27_k05_zahlungsbedingungen.md", "markt/2026-06-25_trailer-erholung.md"]
+  },
+  {
+    "kunde": "Steirer Verkehrstechnik Innenausbau GmbH",
+    "ansprechpartner": "Mag. Johann Pichler (Einkauf)",
+    "thema": "Überarbeitetes FR-Angebot mit 5-Jahres-Staffel vor Ende Oktober abstimmen",
+    "prioritaet": "mittel",
+    "punkte": 40,
+    "begruendung": "Klasse B (20) + Kontakt 12 Tage überfällig (10) + keine Reklamation (0) + kein Wettbewerbssignal beim Kunden (0) + Marktmeldung Bahn-Ausschreibungen (10) + Angebot erst Ende Oktober fällig (0)",
+    "quellen": ["kunden/k06-steirer-verkehrstechnik.md", "gespraeche/2026-08-05_k06_muster-freigabe.md", "markt/2026-08-12_bahn-brandschutz.md"]
+  },
+  {
+    "kunde": "Grothe Bauelemente KG",
+    "ansprechpartner": "Ulrich Grothe (Geschäftsführer)",
+    "thema": "Kurzer Anruf: Antwort zur kleineren Mindestbestellmenge und Stand Fassadenprojekt",
+    "prioritaet": "niedrig",
+    "punkte": 30,
+    "begruendung": "Klasse D (5) + Kontakt 43 Tage überfällig (25) + keine Reklamation (0) + kein Wettbewerbssignal (0) + keine passende Marktmeldung (0) + keine offene Zusage mit Termin (0)",
+    "quellen": ["kunden/k09-grothe-bauelemente.md", "gespraeche/2026-05-06_k09_mengen.md"]
+  },
+  {
+    "kunde": "Ostermann Kühlzellenbau GmbH",
+    "ansprechpartner": "Bernd Ostermann (Inhaber)",
+    "thema": "Beim nächsten regulären Kontakt Idee größerer Supermarkt-Paneele aufgreifen, Nachfolger Lukas Ostermann einbinden",
+    "prioritaet": "niedrig",
+    "punkte": 10,
+    "begruendung": "Klasse C (10) + Kontakt nicht überfällig (0) + keine Reklamation (0) + kein Wettbewerbssignal (0) + keine passende Marktmeldung (0) + keine offene Zusage (0)",
+    "quellen": ["kunden/k08-ostermann-kuehlzellenbau.md", "gespraeche/2026-07-30_k08_besuch-inhaber.md"]
+  }
+]

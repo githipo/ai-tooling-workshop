@@ -1,0 +1,69 @@
+{
+  "kunde": "k01",
+  "name": "Lahntal Caravanwerk GmbH",
+  "stichtag": "2026-09-16",
+  "abschnitte": [
+    {
+      "titel": "Steckbrief",
+      "punkte": [
+        { "text": "Kundenklasse A – Betreuungsziel: Kontakt alle 14 Tage, Besuch alle 60 Tage", "quelle": "kunden/k01-lahntal-caravanwerk.md" },
+        { "text": "Letzter Kontakt: 08.09.2026, Telefon mit Jana Reuter – vor 8 Tagen", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md" },
+        { "text": "Tage überfällig (Kontakt): 0", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md" },
+        { "text": "Letzter Besuch vor Ort: 18.03.2026 – vor 182 Tagen, Besuchsziel um 122 Tage überschritten (Messegespräch am 29.08. zählt nicht als Besuch)", "quelle": "gespraeche/2026-03-18_k01_jahresmenge.md, gespraeche/2026-08-29_k01_messe-seitenwand.md" }
+      ]
+    },
+    {
+      "titel": "Beziehung & Ansprechpartner",
+      "punkte": [
+        { "text": "Jana Reuter (Leitung Einkauf) – Hauptansprechpartnerin für Angebot und Reklamation; freundlich, aber spürbarer Druck", "quelle": "gespraeche/2026-08-29_k01_messe-seitenwand.md" },
+        { "text": "Oliver Schade (Leitung Entwicklung) – treibt die neue Baureihe „Lahn Vista“ und das Thema Nachhaltigkeit", "quelle": "gespraeche/2026-05-12_k01_neue-baureihe.md" },
+        { "text": "Petra Lindner (Qualitätssicherung) – verärgert über fehlenden 8D-Report, hat sich bei Frau Reuter beschwert", "quelle": "gespraeche/2026-08-29_k01_messe-seitenwand.md" },
+        { "text": "Bei uns: Außendienst Markus Feldmann, Anwendungstechnik Dr. Sabine Wolter; Einladung zur Hausmesse im November angenommen", "quelle": "kunden/k01-lahntal-caravanwerk.md, gespraeche/2026-09-08_k01_nachfassen-8d.md" }
+      ]
+    },
+    {
+      "titel": "Kommerziell",
+      "punkte": [
+        { "text": "Rahmenvertrag Dachhaut: ca. 95.000 m²/Jahr zu 8,40 €/m², Preis fest bis 31.12.2026; für 2027 wird neu verhandelt", "quelle": "kunden/k01-lahntal-caravanwerk.md, gespraeche/2026-03-18_k01_jahresmenge.md" },
+        { "text": "Forecast 2026 um ca. 12 % gesenkt – erwartete Dachhaut-Menge eher 84.000 m²", "quelle": "gespraeche/2026-03-18_k01_jahresmenge.md" },
+        { "text": "Seitenwände „Lahn Vista“: zusätzlich ca. 60.000–70.000 m²/Jahr möglich; verbindliches Angebot mit Staffelpreisen bis 10.10.2026 zugesagt", "quelle": "gespraeche/2026-05-12_k01_neue-baureihe.md, gespraeche/2026-09-08_k01_nachfassen-8d.md" },
+        { "text": "Zahlungsziel 30 Tage netto", "quelle": "kunden/k01-lahntal-caravanwerk.md" },
+        { "text": "Wunsch nach Konsignationslager – interne Prüfung seit März ohne dokumentiertes Ergebnis", "quelle": "gespraeche/2026-03-18_k01_jahresmenge.md" }
+      ]
+    },
+    {
+      "titel": "Technisch",
+      "punkte": [
+        { "text": "Aktuell: Dachhaut Wohnwagen (GFK glatt, 1,2 mm) und Hagelschutz-Dach Premium (1,5 mm)", "quelle": "kunden/k01-lahntal-caravanwerk.md" },
+        { "text": "Reklamation Charge 26-1182: Farbabweichung ΔE 1,4 (erlaubt 1,0), 3 Rollen gesperrt, 4 Wohnwagen betroffen; Ersatz am 04.07. geliefert", "quelle": "gespraeche/2026-07-02_k01_farbabweichung.md" },
+        { "text": "8D-Report noch offen, zugesagt bis 25.09.2026; vermutete Ursache: Harzcharge des Vorlieferanten (UV-Stabilisator)", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md" },
+        { "text": "Seitenwandmuster: Verklebung in Ordnung, Variante B optisch am besten; Anforderungen 1,0 mm, bis 2,60 m breit, Hochglanz, ΔE max. 1,0", "quelle": "gespraeche/2026-08-29_k01_messe-seitenwand.md, gespraeche/2026-05-12_k01_neue-baureihe.md" }
+      ]
+    },
+    {
+      "titel": "Wettbewerb",
+      "punkte": [
+        { "text": "Italienischer Anbieter hat Seitenwände bemustert und liegt laut Frau Reuter gut 9 % unter unserem Preis; Muster laufen parallel", "quelle": "gespraeche/2026-08-29_k01_messe-seitenwand.md" },
+        { "text": "Marktmeldung: Brianza Plastica bietet Caravan-Seitenwände mit 30 % Rezyklat und EPD zu Einführungspreisen an (synthetische Meldung)", "quelle": "markt/2026-09-01_brianza-plastica-rezyklat.md" },
+        { "text": "Marktmeldung: Caravan-Neuzulassungen in Europa im 1. Halbjahr −9 %; US-Markt schwach, zusätzlicher Preisdruck in Europa erwartet", "quelle": "markt/2026-09-04_caravanmarkt-europa.md, markt/2026-07-10_us-wohnmobilmarkt.md" }
+      ]
+    },
+    {
+      "titel": "Offene Punkte & Risiken",
+      "punkte": [
+        { "text": "8D-Report fällig am 25.09.2026 (in 9 Tagen) – wurde bereits mehrfach angemahnt, Beziehungsrisiko", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md, gespraeche/2026-08-29_k01_messe-seitenwand.md" },
+        { "text": "Angebot Seitenwände fällig am 10.10.2026; Kalkulation wartet auf Rezyklat-Variante", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md" },
+        { "text": "Keine EPD und kein Rezyklatnachweis vorhanden, obwohl der Kunde danach fragt und der Wettbewerb beides bietet", "quelle": "gespraeche/2026-08-29_k01_messe-seitenwand.md, markt/2026-09-01_brianza-plastica-rezyklat.md" },
+        { "text": "Besuchsziel um 122 Tage überschritten", "quelle": "gespraeche/2026-03-18_k01_jahresmenge.md" }
+      ]
+    },
+    {
+      "titel": "Chancen",
+      "punkte": [
+        { "text": "Seitenwände „Lahn Vista“ ab Modelljahr 2028: +60.000–70.000 m²/Jahr", "quelle": "gespraeche/2026-05-12_k01_neue-baureihe.md" },
+        { "text": "Weitere Potenziale laut Stammdaten: Bodenunterseite, Innenverkleidung Nasszelle", "quelle": "kunden/k01-lahntal-caravanwerk.md" },
+        { "text": "Hausmesse im November als Gelegenheit für einen Besuch vor Ort", "quelle": "gespraeche/2026-09-08_k01_nachfassen-8d.md" }
+      ]
+    }
+  ]
+}

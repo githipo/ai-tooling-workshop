@@ -1,0 +1,17 @@
+{
+  "name": "ki-workshop-kundencockpit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Workshop-Repository: Kundencockpit mit KI-Agent (Codex)",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "check": "node scripts/check.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

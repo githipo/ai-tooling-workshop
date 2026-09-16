@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundencockpit</title>
+<style>
+  /* Bewusst schlicht gehalten – Design und KI-Knöpfe entstehen im Workshop per Prompt. */
+  body { font-family: Arial, sans-serif; margin: 0; }
+  [hidden] { display: none !important; } /* sorgt dafür, dass "hidden" immer versteckt */
+  header { padding: 10px 16px; border-bottom: 1px solid #ccc; }
+  header h1 { font-size: 20px; margin: 0; }
+  .ansicht { display: flex; }
+  aside { width: 260px; border-right: 1px solid #ccc; padding: 10px; }
+  aside li { cursor: pointer; padding: 4px 0; }
+  main { flex: 1; padding: 10px 16px; }
+  pre { white-space: pre-wrap; background: #f4f4f4; padding: 8px; }
+  .fehler { color: #b00020; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Kundencockpit</h1>
+</header>
+
+<div class="ansicht">
+  <aside>
+    <strong>Kunden</strong>
+    <ul id="kundenliste"><li>wird geladen …</li></ul>
+  </aside>
+  <main id="kunde">Bitte links einen Kunden auswählen.</main>
+</div>
+
+<script>
+// ---------- kleine Helfer ----------
+
+// Macht Text sicher für die Anzeige in HTML.
+function esc(text) {
+  return String(text ?? '').replace(/[&<>"]/g, (z) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[z]);
+}
+
+// Ruft den Server auf. Ohne "daten" ein GET, mit "daten" ein POST (für die KI-Schnittstellen, siehe AGENTS.md).
+async function api(url, daten) {
+  const antwort = await fetch(url, daten && {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(daten),
+  });
+  const json = await antwort.json();
+  if (!antwort.ok) throw new Error(json.fehler || antwort.statusText);
+  return json;
+}
+
+// ---------- Kundenliste ----------
+
+async function ladeKundenliste() {
+  const liste = document.getElementById('kundenliste');
+  try {
+    const kunden = await api('/api/kunden');
+    liste.innerHTML = kunden.map((k) => `<li data-id="${esc(k.id)}">${esc(k.name)} (${esc(k.kundenklasse)})</li>`).join('');
+    liste.querySelectorAll('li').forEach((li) => {
+      li.onclick = () => zeigeKunde(li.dataset.id).catch((fehler) => {
+        document.getElementById('kunde').innerHTML = `<p class="fehler">${esc(fehler.message)}</p>`;
+      });
+    });
+  } catch (fehler) {
+    liste.innerHTML = `<li class="fehler">${esc(fehler.message)}</li>`;
+  }
+}
+
+// ---------- Ein Kunde: Rohdaten ----------
+
+async function zeigeKunde(id) {
+  const bereich = document.getElementById('kunde');
+  bereich.textContent = 'wird geladen …';
+  const { kunde, gespraeche } = await api(`/api/kunden/${id}`);
+
+  bereich.innerHTML = `
+    <h2>${esc(kunde.name)}</h2>
+
+    <h3>Stammdaten: ${esc(kunde.datei)}</h3>
+    <pre>${esc(kunde.inhalt)}</pre>
+
+    <h3>Gesprächsnotizen (${gespraeche.length})</h3>
+    ${gespraeche.map((g) => `
+      <details>
+        <summary>${esc(g.datum)} – ${esc(g.art)} – ${esc(g.ansprechpartner)}</summary>
+        <pre>${esc(g.inhalt)}</pre>
+      </details>`).join('')}
+  `;
+}
+
+ladeKundenliste();
+</script>
+</body>
+</html>
