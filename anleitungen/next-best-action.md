@@ -26,7 +26,7 @@ Zähle für jeden Kunden die Punkte zusammen:
 - Kundenklasse D: **5** Punkte
 - Kontakt überfällig: **5** Punkte je angefangene 10 Tage über dem Kontaktintervall, höchstens **30** Punkte
 - Offene Reklamation oder offenes Qualitätsproblem: **25** Punkte
-- Wettbewerbssignal in den letzten 90 Tagen (Angebot, Muster oder Preisvergleich eines Wettbewerbers): **25** Punkte
+- Wettbewerbssignal in den letzten 90 Tagen (Angebot, Muster oder Preisvergleich eines Wettbewerbers): **40** Punkte
 - Passende Marktmeldung (Chance oder Risiko): **10** Punkte
 - Offene Zusage von uns (Angebot, Muster, Bericht, Rückmeldung), deren Termin überschritten ist oder in den nächsten 14 Tagen liegt: **15** Punkte
 
