@@ -16,7 +16,7 @@ Beantworte eine Frage zu genau einem Kunden – nur mit Informationen aus diesem
    2. alle Notizen in `gespraeche/` mit `kunde: <id>`, **neueste zuerst**
    3. passende Meldungen in `markt/` (gleiche Branche oder Kunde genannt)
 3. Nur das verwenden, was zur Frage passt. Nichts erfinden. Fehlt etwas, schreibe „keine Information“.
-4. Stichtag ist das Datum aus der Anfrage, sonst das heutige Datum.
+4. Stichtag ist der 16.09.2026.
 
 ## Antwortformat
 
@@ -39,7 +39,7 @@ Antworte auf Deutsch, in genau diesem Aufbau:
 ```
 
 - Alle drei Gruppen immer aufführen. Passt nichts zur Frage: „– keine Information“.
-- Höchstens 4 Punkte pro Gruppe.
+- Höchstens 3 Punkte pro Gruppe, je ein kurzer Satz.
 - Datumsangaben im Format TT.MM.JJJJ.
 
 ## Beispielfragen

@@ -11,17 +11,14 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
-const STICHTAG = process.env.STICHTAG || new Date().toISOString().slice(0, 10); // Datum, auf das sich "überfällig" bezieht
 const ZEITLIMIT_SEKUNDEN = 180;
-const IST_WINDOWS = process.platform === 'win32';
 
-// Welche KI-CLI benutzt wird. Standard: "codex".
-// Beispiel für Claude Code:  AGENT_CLI="claude -p"  (Prompt kommt per stdin, Antwort über stdout)
-const AGENT_CLI = process.env.AGENT_CLI || 'codex';
+// Der KI-Befehl, genau so wie man ihn im Terminal eintippen würde. Die Frage kommt über die Eingabe (stdin).
+// Standard: Codex, darf nur lesen. Beispiel für Claude Code:  AGENT_CLI="claude -p"
+const AGENT_CLI = process.env.AGENT_CLI || 'codex exec --sandbox read-only --skip-git-repo-check -';
 
 // ---------------------------------------------------------------------------
 // Dateien lesen
@@ -100,40 +97,25 @@ function alsJson(text) {
   }
 }
 
-// Startet die KI-CLI ohne Bildschirm ("headless") und wartet auf die Antwort.
+// Startet die KI wie im Terminal: im Projektordner, Frage über die Eingabe, Antwort über die Ausgabe.
 // Gibt immer ein Ergebnis zurück, wirft nie: { ok, text, sekunden }.
-//
-// Codex wird so aufgerufen (geprüft mit codex-cli 0.154.0, "codex exec --help"):
-//   codex exec --sandbox read-only --skip-git-repo-check --ephemeral --color never
-//              --output-last-message <datei> -
-//   read-only            = die KI darf nur lesen, nichts ändern
-//   --skip-git-repo-check = läuft auch in Ordnern ohne git (Modus "ohne")
-//   --ephemeral          = keine Sitzungsdateien speichern
-//   -                    = der Prompt kommt über stdin (vermeidet Probleme mit Anführungszeichen unter Windows)
-function runAgent({ prompt, cwd, outputFile, titel = 'KI-Aufruf' }) {
-  outputFile ??= path.join(os.tmpdir(), `ki-antwort-${Date.now()}-${Math.random().toString(36).slice(2)}.txt`);
-  const [befehl, ...extra] = AGENT_CLI.split(' ').filter(Boolean);
-  const args = AGENT_CLI.includes('codex')
-    ? [...extra, 'exec', '--sandbox', 'read-only', '--skip-git-repo-check', '--ephemeral',
-      '--color', 'never', '--output-last-message', outputFile, '-']
-    : extra;
-
-  console.log(`\n[KI] START  ${titel}`);
-  console.log(`[KI]   Ordner: ${cwd}`);
-  console.log(`[KI]   Prompt: ${prompt}`);
+function runAgent(prompt, titel = 'KI-Aufruf') {
+  console.log(`\n[KI] START  ${titel}: ${prompt}`);
   const start = Date.now();
+  const kind = spawn(AGENT_CLI, { cwd: __dirname, shell: true });
+  let stdout = '';
+  let stderr = '';
+  kind.stdout.on('data', (d) => { stdout += d; });
+  kind.stderr.on('data', (d) => { stderr += d; });
+  kind.stdin.on('error', () => {}); // passiert, wenn die CLI sofort wieder endet
+  kind.stdin.end(prompt);
 
   return new Promise((resolve) => {
     let erledigt = false;
-    let stdout = '';
-    let stderr = '';
-    let kind;
-
     const fertig = (ok, text) => {
       if (erledigt) return;
       erledigt = true;
       clearTimeout(timer);
-      fs.rmSync(outputFile, { force: true });
       const sekunden = Math.round((Date.now() - start) / 1000);
       console.log(ok
         ? `[KI] OK     ${titel} – fertig nach ${sekunden} s`
@@ -146,48 +128,25 @@ function runAgent({ prompt, cwd, outputFile, titel = 'KI-Aufruf' }) {
       fertig(false, `Die KI hat nicht innerhalb von ${ZEITLIMIT_SEKUNDEN} Sekunden geantwortet.`);
     }, ZEITLIMIT_SEKUNDEN * 1000);
 
-    try {
-      // Unter Windows ist "codex" eine .cmd-Datei, die nur über die Shell startet.
-      // Dann bauen wir eine Befehlszeile; Argumente mit Leerzeichen (z. B. Pfade) kommen in Anführungszeichen.
-      kind = IST_WINDOWS
-        ? spawn([befehl, ...args].map((a) => (/\s/.test(a) ? `"${a}"` : a)).join(' '), { cwd, shell: true })
-        : spawn(befehl, args, { cwd });
-    } catch (fehler) {
-      return fertig(false, `Die KI-CLI konnte nicht gestartet werden: ${fehler.message}`);
-    }
-
-    kind.stdout.on('data', (d) => { stdout += d; });
-    kind.stderr.on('data', (d) => { stderr += d; });
-    kind.on('error', (fehler) => fertig(false, fehler.code === 'ENOENT'
-      ? `Der Befehl "${befehl}" wurde nicht gefunden. Ist die Codex CLI installiert (npm run check)?`
-      : `Die KI-CLI konnte nicht gestartet werden: ${fehler.message}`));
+    kind.on('error', (fehler) => fertig(false, `Die KI-CLI konnte nicht gestartet werden: ${fehler.message}`));
     kind.on('close', (code) => {
+      if (code === 0 && stdout.trim()) return fertig(true, stdout.trim());
       if (code === 9009 || code === 127) {
-        return fertig(false, `Der Befehl "${befehl}" wurde nicht gefunden. Ist die Codex CLI installiert (npm run check)?`);
+        return fertig(false, `Der Befehl "${AGENT_CLI.split(' ')[0]}" wurde nicht gefunden. Ist die Codex CLI installiert (npm run check)?`);
       }
-      if (code !== 0 && /401|unauthorized|not logged in/i.test(stderr)) {
+      if (/401|unauthorized|not logged in/i.test(stderr)) {
         return fertig(false, 'Codex ist nicht angemeldet. Im Terminal "codex login" ausführen.');
       }
-      if (code !== 0) {
-        const details = stderr.trim().split(/\r?\n/).slice(-3).join(' | ');
-        return fertig(false, `Die KI-CLI hat mit Fehlercode ${code} abgebrochen. ${details}`);
-      }
-      let antwort = '';
-      try { antwort = fs.readFileSync(outputFile, 'utf8').trim(); } catch { /* Datei fehlt: stdout nehmen */ }
-      antwort ||= stdout.trim();
-      if (antwort) fertig(true, antwort);
-      else fertig(false, 'Die KI hat eine leere Antwort geliefert.');
+      const details = stderr.trim().split(/\r?\n/).slice(-3).join(' | ');
+      fertig(false, `Die KI-CLI hat mit Fehlercode ${code} abgebrochen. ${details}`);
     });
-
-    kind.stdin.on('error', () => {}); // passiert, wenn die CLI sofort wieder endet
-    kind.stdin.end(prompt);
   });
 }
 
 // Beendet die KI-CLI samt Unterprozessen.
 function stoppe(kind) {
   if (!kind || kind.exitCode !== null) return;
-  if (IST_WINDOWS) spawn('taskkill', ['/pid', String(kind.pid), '/T', '/F']);
+  if (process.platform === 'win32') spawn('taskkill', ['/pid', String(kind.pid), '/T', '/F']);
   else kind.kill('SIGTERM');
 }
 
@@ -222,44 +181,24 @@ app.get('/api/kunden/:id', (req, res) => {
   res.json({ kunde, gespraeche: gespraecheVon(kunde.id) });
 });
 
-// Vertriebs-Assistent: freie Frage, "ohne" oder "mit" Anleitung.
+// Vertriebs-Assistent: Die Frage geht unverändert an die KI.
 app.post('/api/agent/frage', async (req, res) => {
-  const { frage, anleitung } = req.body ?? {};
-  if (!String(frage ?? '').trim()) return res.status(400).json({ fehler: 'Bitte eine Frage eingeben.' });
-
-  let ergebnis;
-  if (anleitung) {
-    ergebnis = await runAgent({
-      prompt: `Wähle die passende Anleitung in anleitungen/ und befolge sie. Heute ist der ${STICHTAG}. `
-        + `Antworte als gut lesbarer Text, nicht als JSON.\n\nFrage: ${frage}`,
-      cwd: __dirname,
-      titel: 'Frage MIT Anleitung',
-    });
-  } else {
-    // Nur die Daten in einen leeren Ordner kopieren – keine AGENTS.md, keine Anleitungen.
-    const ordner = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-ohne-'));
-    for (const unterordner of ['kunden', 'gespraeche', 'markt']) {
-      fs.cpSync(path.join(__dirname, unterordner), path.join(ordner, unterordner), { recursive: true });
-    }
-    ergebnis = await runAgent({
-      prompt: `Heute ist der ${STICHTAG}. Nutze nur die Dateien in diesem Ordner.\n\nFrage: ${frage}`,
-      cwd: ordner,
-      titel: 'Frage OHNE Anleitung',
-    });
-    fs.rmSync(ordner, { recursive: true, force: true });
+  const frage = String(req.body?.frage ?? '').trim();
+  if (!frage) return res.status(400).json({ fehler: 'Bitte eine Frage eingeben.' });
+  const ergebnis = await runAgent(frage, 'Frage');
+  if (!ergebnis.ok) {
+    const mitAnleitung = fs.readdirSync(path.join(__dirname, 'anleitungen')).some((n) => n.endsWith('.md'));
+    return sendeFallback(res, mitAnleitung ? 'frage-mit.md' : 'frage-ohne.md', ergebnis.text);
   }
-
-  if (!ergebnis.ok) return sendeFallback(res, anleitung ? 'frage-mit.md' : 'frage-ohne.md', ergebnis.text);
   res.json({ text: ergebnis.text, json: null, fallback: false, sekunden: ergebnis.sekunden });
 });
 
 // Nächste Schritte für alle Kunden. Das letzte gute Ergebnis wird in fallback/ gespeichert.
 app.post('/api/agent/next-best-action', async (req, res) => {
-  const ergebnis = await runAgent({
-    prompt: `Befolge die Anleitung in anleitungen/next-best-action.md. Stichtag ist der ${STICHTAG}. Antworte nur mit dem JSON.`,
-    cwd: __dirname,
-    titel: 'Nächste Schritte',
-  });
+  if (!fs.existsSync(path.join(__dirname, 'anleitungen', 'next-best-action.md'))) {
+    return sendeFallback(res, 'next-best-action.json', 'anleitungen/next-best-action.md fehlt – bitte aus vorlagen/ kopieren.');
+  }
+  const ergebnis = await runAgent('Befolge anleitungen/next-best-action.md. Antworte nur mit dem JSON.', 'Nächste Schritte');
   const json = ergebnis.ok ? alsJson(ergebnis.text) : null;
   const liste = Array.isArray(json) ? json : Object.values(json ?? {}).find(Array.isArray);
   if (!liste) {
@@ -286,7 +225,7 @@ if (require.main === module) {
       process.exit(1);
     }
     console.log(`Kundencockpit läuft: http://localhost:${PORT}`);
-    console.log(`KI-CLI: ${AGENT_CLI}   Stichtag: ${STICHTAG}   Beenden: Strg+C`);
+    console.log(`KI-Befehl: ${AGENT_CLI}   Beenden: Strg+C`);
   });
 }
 

@@ -23,24 +23,28 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 
 - Codex sagt, dass `npm run dev` im Terminal nötig ist (so steht es in `AGENTS.md`). Das Terminal muss offen bleiben. Am Anfang zeigt die App nur die Kundenliste und die Rohdaten.
 - Den Bau des Assistenten am Beamer vormachen, dann nachmachen lassen.
-- **Erwartetes Ergebnis:** Eingabefeld, Knopf „Fragen“, Schalter „Anleitung verwenden“, Ladeanzeige mit Sekunden. Die Antworten stehen als Verlauf untereinander.
+- **Erwartetes Ergebnis:** Eingabefeld, Knopf „Fragen“, Ladeanzeige mit Sekunden. Die Antworten stehen als Verlauf untereinander.
 - **Den Unterschied betonen:** Codex baut die App, der Assistent beantwortet Fragen und darf nur lesen.
 - **Hilfe bei Problemen:** Nach zwei erfolglosen Versuchen zu `stufe-1-fertig` springen.
 
 **Schritt 2:**
 
+- **Ablauf:** Erst fragen, dann `vorlagen/kunden-uebersicht.md` nach `anleitungen/` kopieren und dieselbe Frage noch einmal stellen.
 - **Vorführfrage:** „Fasse Lahntal Caravanwerk zusammen.“ Für diese Frage gibt es Beispielantworten, ohne und mit Anleitung.
+- **Achtung:** Wer eine Vorlage zu früh einfügt, hat keinen Vergleich mehr. Dann die Datei aus `anleitungen/` wieder löschen.
 - **Ohne Anleitung:** keine feste Gliederung, meist keine Quellen, Marktmeldungen nur zufällig.
 - **Mit Anleitung:** sieben feste Abschnitte mit Quellen, dazu ein Steckbrief. Der letzte Besuch liegt 182 Tage zurück, das Besuchsziel ist um 122 Tage überschritten.
 - **Nach dem Nachhaltigkeits-Prompt** hat die Antwort acht Abschnitte, ohne dass jemand programmiert hat.
 
 **Schritt 3:**
 
-- **Mit Anleitung** folgt die Antwort dem Aufbau aus `anleitungen/kundenabfrage.md`: Kurzantwort, Kommerziell, Wettbewerb, Technisch, Offen, jeweils mit Quellen.
-- **Die KI wählt die Anleitung selbst.** Der Server sagt ihr nur „Wähle die passende Anleitung in `anleitungen/`“.
+- Zuerst `vorlagen/kundenabfrage.md` nach `anleitungen/` kopieren.
+- Die Antworten folgen dann dem Aufbau Kurzantwort, Kommerziell, Wettbewerb, Technisch, Offen, jeweils mit Quellen.
+- **Die KI wählt die Anleitung selbst.** Der Server sagt ihr nur: „Gibt es unter anleitungen/ eine passende Anleitung, befolge sie.“ Bei einer Zusammenfassung nimmt sie `kunden-uebersicht.md`, bei einer Frage `kundenabfrage.md`.
 
 **Schritt 4:**
 
+- Zuerst `vorlagen/next-best-action.md` nach `anleitungen/` kopieren. Ohne diese Datei zeigt „Aktualisieren“ nur das Beispielergebnis.
 - Die Beispieldaten sind so gebaut, dass sich die Reihenfolge sichtbar ändert:
   - **Wettbewerbssignal 25 → 40:** Kessler & Voigt steigt von Platz 3 auf Platz 2.
   - **Notiz zu Odra Panele:** Der C-Kunde steigt von „mittel“ auf „hoch“.
@@ -48,18 +52,13 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 
 **Schritt 5:** Windows+H braucht ein Mikrofon und die Einstellung „Online-Spracherkennung“.
 
-## Ohne und mit Anleitung: So bleibt der Vergleich fair
+## Ohne und mit Anleitung
 
-Der Vergleich läuft bewusst **nur über den Assistenten in der App** und nicht im Codex-Chat. Im Chat liest Codex immer `AGENTS.md` und kann jederzeit in `anleitungen/` schauen.
-
-- **Schalter aus:**
-  - Der Server kopiert `kunden/`, `gespraeche/` und `markt/` in einen leeren Temp-Ordner und startet Codex dort.
-  - Der Prompt lautet: „Heute ist der <Datum>. Nutze nur die Dateien in diesem Ordner. Frage: …“
-  - In diesem Ordner gibt es weder `AGENTS.md` noch `anleitungen/`. Beide Seiten sehen also dieselben Daten. Der einzige Unterschied ist die Anleitung.
-- **Schalter an:** Codex läuft im Projektordner mit dem Prompt „Wähle die passende Anleitung in anleitungen/ und befolge sie. Frage: …“.
-- **Kontrolle:** Das Terminal von `npm run dev` zeigt bei jedem Aufruf Ordner und Prompt (`[KI] START …`).
-- **Wichtig:** Auf den Laptops darf es **keine persönliche Codex-Anleitung** geben, also keine Datei `%USERPROFILE%\.codex\AGENTS.md`. Codex liest diese Datei in jedem Ordner, also auch bei ausgeschaltetem Schalter.
-- **Zusätzliche Regel in `AGENTS.md`:** Bittet jemand im Chat um ein Ergebnis „ohne Anleitung“, öffnet Codex keine Datei in `anleitungen/`. Das ist eine Anweisung, keine technische Sperre.
+- **So arbeitet der Assistent:** Der Server startet bei jeder Frage den KI-Befehl im Projektordner, genau wie im Terminal. Die Frage geht unverändert hinein. Die KI liest dabei `AGENTS.md` und alle Dateien, die sie braucht.
+- **Warum der Vergleich funktioniert:** In `AGENTS.md` steht: Liegt in `anleitungen/` eine passende Anleitung, befolge sie. Sonst antworte ohne und nutze nichts aus `vorlagen/`. Am Anfang ist `anleitungen/` leer; der Ordner enthält nur `.gitkeep`, damit Git ihn speichert.
+- **Nur eine Anweisung:** Das ist keine technische Sperre. Liest die KI trotzdem eine Vorlage, fällt das im Vergleich auf und ist ein guter Gesprächsanlass.
+- **Kontrolle:** Das Terminal von `npm run dev` zeigt bei jedem Aufruf die Frage und die Dauer (`[KI] START …`, `[KI] OK …`).
+- **Wichtig:** Auf den Laptops darf es **keine persönliche Codex-Anleitung** geben, also keine Datei `%USERPROFILE%\.codex\AGENTS.md`. Sie könnte dem Projekt-`AGENTS.md` widersprechen.
 
 ## Vorbereitung (am Vortag, je Laptop)
 
@@ -82,7 +81,7 @@ Der Vergleich läuft bewusst **nur über den Assistenten in der App** und nicht 
    ```
 
    Dann http://localhost:3000 öffnen:
-   - im Assistenten „Fasse Lahntal Caravanwerk zusammen.“ einmal ohne und einmal mit Anleitung fragen,
+   - im Assistenten „Fasse Lahntal Caravanwerk zusammen.“ fragen (dort liegen alle Anleitungen schon in `anleitungen/`),
    - im Reiter „Nächste Schritte“ auf „Aktualisieren“ klicken.
 
    Danach mit **Strg+C** beenden und zurücksetzen:
@@ -98,8 +97,8 @@ Der Vergleich läuft bewusst **nur über den Assistenten in der App** und nicht 
 | Tag | Stand |
 |---|---|
 | `stufe-0-start` | Ausgangszustand (entspricht `main`): nur Kundenliste und Rohdaten |
-| `stufe-1-fertig` | Nach Schritt 1: Design und Vertriebs-Assistent; Anleitung noch unverändert |
-| `stufe-4-start` | Zusätzlich Abschnitt „Nachhaltigkeit“ und Reiter „Nächste Schritte“. Gewichtung und Notizen sind noch unverändert. |
+| `stufe-1-fertig` | Nach Schritt 1: Design und Vertriebs-Assistent; `anleitungen/` noch leer |
+| `stufe-4-start` | Zusätzlich alle drei Anleitungen in `anleitungen/` (Kundenübersicht mit „Nachhaltigkeit“) und Reiter „Nächste Schritte“. Gewichtung und Notizen sind noch unverändert. |
 | `stufe-4-fertig` | Zusätzlich Gewichtung „Wettbewerbssignal 40“ und neue Notiz zu Odra Panele |
 
 Hängt eine Gruppe fest, die App mit **Strg+C** beenden und im Terminal eingeben:
@@ -123,6 +122,8 @@ git switch -f main
 git clean -fd
 ```
 
+Das entfernt auch die eingefügten Anleitungen, danach ist `anleitungen/` wieder leer.
+
 ## Gesperrte Dateien
 
 - **Welche Dateien:** `server.js`, `scripts/check.js`, `package.json` und `package-lock.json`. Laut `AGENTS.md` ändert Codex sie nicht, auch nicht auf ausdrückliche Bitte. Das ist eine Anweisung an Codex, kein technischer Schutz.
@@ -139,7 +140,7 @@ git clean -fd
 - **In der App:**
   - Nach spätestens 180 Sekunden bricht der Server ab.
   - Danach zeigt die App ein Beispielergebnis aus `fallback/` mit gelbem Hinweis.
-  - **Im Assistenten** ist das immer die Antwort auf „Fasse Lahntal Caravanwerk zusammen.“ (ohne bzw. mit Anleitung), egal welche Frage gestellt wurde. Die Beispielantwort sagt das in der ersten Zeile.
+  - **Im Assistenten** ist das immer die Antwort auf „Fasse Lahntal Caravanwerk zusammen.“, egal welche Frage gestellt wurde. Die Beispielantwort sagt das in der ersten Zeile. Ist `anleitungen/` leer, kommt die Version ohne Anleitung, sonst die mit Anleitung.
   - **Bei „Nächste Schritte“** ist es die zuletzt erfolgreiche Liste.
 - **Im Codex-Chat:** Antwort stoppen, neuen Chat beginnen und den Prompt erneut senden. Hilft das nicht, am Moderationsbildschirm weitermachen oder zum passenden Tag springen.
 - **Im Terminal des Servers:** Jeder KI-Aufruf wird protokolliert (`[KI] START`, `[KI] OK` oder `[KI] FEHLER`), mit Ordner, Prompt und Dauer.
@@ -150,29 +151,32 @@ Einstellungen werden vor dem Start im Terminal gesetzt (PowerShell):
 
 ```text
 $env:PORT="3001"; npm run dev
-$env:STICHTAG="2026-09-16"; npm run dev
 $env:AGENT_CLI="claude -p"; npm run dev
 ```
 
 | Variable | Standard | Wirkung |
 |---|---|---|
 | `PORT` | `3000` | Port der App |
-| `STICHTAG` | heutiges Datum | Datum, gegen das „überfällig“ berechnet wird. Die Beispieldaten sind auf Mitte September 2026 ausgelegt, die Beispielergebnisse auf den 16.09.2026. |
-| `AGENT_CLI` | `codex` | Welche KI-CLI der Server startet. Enthält der Wert „codex“, hängt der Server die Codex-Optionen unten an. Jeder andere Wert (z. B. `claude -p`) bekommt den Prompt über die Standardeingabe und liefert die Antwort über die Standardausgabe. Pfade mit Leerzeichen funktionieren hier nicht. |
+| `AGENT_CLI` | `codex exec --sandbox read-only --skip-git-repo-check -` | Der KI-Befehl, genau so wie man ihn im Terminal eintippt. Der Server startet ihn im Projektordner, schickt die Frage über die Eingabe und liest die Antwort aus der Ausgabe. |
 
-Der Server ruft Codex so auf (geprüft mit codex-cli 0.154.0):
-
-```text
-codex exec --sandbox read-only --skip-git-repo-check --ephemeral --color never --output-last-message <temporäre Datei> -
-```
+Die Codex-Optionen:
 
 - `--sandbox read-only`: Codex darf nur lesen.
-- `--skip-git-repo-check`: Codex läuft auch im Temp-Ordner des Modus „ohne“.
-- `--ephemeral`: Codex speichert keine Sitzungsdateien.
-- `--output-last-message`: Codex schreibt seine Antwort in eine Datei, die der Server ausliest.
-- `-`: Der Prompt kommt über die Standardeingabe. So gibt es unter Windows keine Probleme mit Anführungszeichen.
+- `--skip-git-repo-check`: Codex läuft auch, wenn der Ordner kein Git-Repository ist (z. B. aus einer ZIP-Datei).
+- `-`: Die Frage kommt über die Eingabe. So gibt es unter Windows keine Probleme mit Anführungszeichen.
 
-Für schnellere Antworten: `$env:AGENT_CLI="codex -c model_reasoning_effort=low"`.
+**Vor dem Workshop einmal mit Codex prüfen:** `npm run check` muss als Antwort nur „OK“ zeigen. Codex schreibt die fertige Antwort in die Ausgabe und Fortschrittsmeldungen separat. Ohne Codex-Login ließ sich das bisher nicht testen.
+
+Stichtag für „überfällig“ ist der 16.09.2026. Er steht in `AGENTS.md` und in den Vorlagen.
+
+Für schnellere Antworten (die KI denkt weniger lange nach):
+
+```text
+$env:AGENT_CLI="codex exec --sandbox read-only --skip-git-repo-check -c model_reasoning_effort=low -"
+$env:AGENT_CLI="claude -p --setting-sources project,local --effort low"
+```
+
+`--setting-sources project,local` lässt bei Claude die persönlichen Plugins und Hooks weg.
 
 ## Dateien, die die Teilnehmenden nicht brauchen
 

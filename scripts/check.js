@@ -4,7 +4,6 @@
 const { spawnSync } = require('child_process');
 const fs = require('fs');
 const net = require('net');
-const os = require('os');
 const path = require('path');
 
 const WURZEL = path.join(__dirname, '..');
@@ -37,7 +36,7 @@ async function main() {
   }
 
   // 3. Datenordner
-  for (const ordner of ['kunden', 'gespraeche', 'markt', 'anleitungen', 'eingang', 'fallback']) {
+  for (const ordner of ['kunden', 'gespraeche', 'markt', 'vorlagen', 'eingang', 'fallback']) {
     let dateien = [];
     try { dateien = fs.readdirSync(path.join(WURZEL, ordner)).filter((d) => !d.startsWith('.')); } catch { /* fehlt */ }
     if (dateien.length) ok(`Ordner ${ordner}/ (${dateien.length} Dateien)`);
@@ -83,9 +82,7 @@ async function main() {
 
   // 7. Kurzer Testaufruf
   console.log('        Teste einen kurzen KI-Aufruf (kann bis zu einer Minute dauern) …');
-  const ordner = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-check-'));
-  const ergebnis = await runAgent({ prompt: 'Antworte nur mit dem Wort OK.', cwd: ordner, titel: 'Vorab-Test' });
-  fs.rmSync(ordner, { recursive: true, force: true });
+  const ergebnis = await runAgent('Antworte nur mit dem Wort OK.', 'Vorab-Test');
   if (ergebnis.ok) ok(`KI-Testaufruf erfolgreich nach ${ergebnis.sekunden} s (Antwort: ${ergebnis.text.slice(0, 40)})`);
   else fehler(`KI-Testaufruf fehlgeschlagen: ${ergebnis.text}`, 'Angemeldet? "codex login" ausführen. Internetverbindung prüfen.');
 }

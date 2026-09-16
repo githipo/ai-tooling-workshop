@@ -17,7 +17,8 @@ Heute steuern Sie einen KI-Agenten (**Codex**) nur mit Ihren eigenen Worten. Cod
 | `kunden/` | eine Datei pro Kunde |
 | `gespraeche/` | Gesprächsnotizen, eine Datei pro Kontakt |
 | `markt/` | Markt- und Wettbewerbsmeldungen |
-| `anleitungen/` | **Anleitungen für die KI** – hier steht, *wie* gearbeitet wird |
+| `anleitungen/` | **Anleitungen für die KI** – hier steht, *wie* gearbeitet wird. Am Anfang leer, Sie füllen ihn im Workshop. |
+| `vorlagen/` | fertige Anleitungen zum Einfügen |
 | `eingang/` | ein unbearbeitetes Diktat |
 | `AGENTS.md` | Hintergrundwissen für Codex; liest er bei jedem Chat automatisch |
 
@@ -51,15 +52,21 @@ Der Unterschied: **Codex** (hier in VS Code) baut die App und darf Dateien ände
 Wie starte ich die App und öffne sie im Browser? Erkläre es mir Schritt für Schritt.
 ```
 
-Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“), und lassen Sie den Assistenten bauen:
+Stellen Sie Codex danach auf den Modus, in dem er **Dateien ändern** darf (je nach Version „Agent“), und lassen Sie den Assistenten bauen!
+
+Versuchen Sie zu Beginn, mit Codex das Design nutzerfreundlicher zu gestalten. Prompten Sie z.B. 
 
 ```text
-Baue in der App einen „Vertriebs-Assistenten“: ein Eingabefeld mit Knopf „Fragen“ und einem Schalter „Anleitung verwenden“ (zunächst aus). Er nutzt die fertige Frage-Funktion des Servers. Fragen und Antworten bleiben untereinander stehen, jeweils mit dem Hinweis „mit Anleitung“ oder „ohne Anleitung“.
+Mach das Interface benutzerfreundlicher. Verwende warme Farben für die Buttons und formattiere die Datenauflistung mit visuellen Elementen, sodass die Kundendaten leichter zu lesen sind.
+```
+
+Als nächstes wollen wir ein Chat Interface auf der Seite bauen. Damit das funktioniert, haben wir zu Beginn den lokalen Server mit Codex zusammen gestartet. Dieses Chat Interface soll sich zu server.js verbinden, der Codex im Hintergrund aufruft. 
+
+```text
+Baue in der App einen „Vertriebs-Assistenten“: ein Eingabefeld mit Knopf „Fragen“. Er nutzt die fertige Frage-Funktion des Servers. Fragen und Antworten bleiben untereinander stehen.
 ```
 
 Nach jeder Änderung im Browser **F5** drücken. Dann eine erste Frage stellen, z. B. „Welche Kunden haben wir?“. Eine Antwort dauert 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex einfach, was Sie sehen („Beim Klick passiert nichts“).
-
-**Ideen für zwischendurch:** Lassen Sie Codex das Aussehen verändern („Gestalte die App freundlicher: ruhige Farben, eine moderne Schrift, die Kundenliste als Karten.“). Versuchen Sie auch andere Design-Änderungen, um die Darstellung der Daten zu verbessern.
 
 > Falls es hakt: Menü **Terminal → Neues Terminal**, dort `npm run dev` eingeben und Enter drücken. Das Fenster offen lassen. Dann im Browser **http://localhost:3000** öffnen.
 
@@ -67,28 +74,31 @@ Nach jeder Änderung im Browser **F5** drücken. Dann eine erste Frage stellen, 
 
 ## Schritt 2 – Ohne und mit Anleitung (35 min)
 
-**Worum geht es?** Das ist der Kern des Workshops. Sie stellen dem Assistenten dieselbe Frage zweimal – einmal ohne Vorgaben, einmal mit einer schriftlichen Anleitung. Dann vergleichen Sie: Welche Antwort ist vollständiger, einheitlicher und nachprüfbar?
+**Worum geht es?** Das ist der Kern des Workshops. Sie stellen dem Assistenten dieselbe Frage zweimal – erst ohne, dann mit einer schriftlichen Anleitung. Dann vergleichen Sie: Welche Antwort ist vollständiger, einheitlicher und nachprüfbar?
 
-Der Schalter „Anleitung verwenden“ sorgt für einen fairen Vergleich:
+Der Assistent nutzt eine Anleitung, sobald eine passende im Ordner `anleitungen/` liegt. Noch ist der Ordner leer – er arbeitet also ohne.
 
-- **Aus:** Die KI bekommt nur die Daten (Kunden, Notizen, Marktmeldungen) in einem leeren Ordner. Eine Anleitung kann sie dort gar nicht sehen.
-- **An:** Die KI arbeitet im Projekt und hält sich an die passende Anleitung, hier `anleitungen/kunden-uebersicht.md`.
-
-**Beispiel für den Anfang:** Diese Frage erst mit Schalter **aus**, dann mit Schalter **an** stellen:
+**1. Ohne Anleitung fragen:**
 
 ```text
 Fasse Lahntal Caravanwerk zusammen.
 ```
 
-**Worauf achten?** Gibt es Quellenangaben? Wäre die Gliederung bei jedem Kunden gleich? Erkennt die KI, wann der letzte Besuch war?
+**2. Anleitung einfügen.** Öffnen Sie `vorlagen/kunden-uebersicht.md` und lesen Sie sie: Das ist Firmenwissen in Textform. Dann kopieren Sie die Datei nach `anleitungen/` – in VS Code per Kopieren und Einfügen oder per Codex:
 
-**Danach: die Anleitung ändern.** Öffnen Sie `anleitungen/kunden-uebersicht.md` und lesen Sie sie. Die Anleitung ist Firmenwissen in Textform. Ändern Sie sie, ändert sich die Antwort – ohne dass jemand programmiert. Zum Beispiel per Codex:
+```text
+Kopiere vorlagen/kunden-uebersicht.md nach anleitungen/.
+```
+
+**3. Dieselbe Frage noch einmal stellen** und die beiden Antworten vergleichen. Gibt es Quellenangaben? Wäre die Gliederung bei jedem Kunden gleich? Erkennt die KI, wann der letzte Besuch war?
+
+**Danach: die Anleitung ändern.** Ändern Sie die Anleitung, ändert sich die Antwort – ohne dass jemand programmiert. Zum Beispiel per Codex:
 
 ```text
 Ergänze in anleitungen/kunden-uebersicht.md einen Abschnitt „Nachhaltigkeit“ (Rezyklatanteil, CO2-Daten, EPD-Anfragen) nach „Wettbewerb“.
 ```
 
-Dann dieselbe Frage ein drittes Mal stellen (Schalter an). Im Verlauf sehen Sie jetzt drei Antworten untereinander.
+Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf sehen Sie jetzt drei Antworten untereinander.
 
 ---
 
@@ -98,23 +108,23 @@ Dann dieselbe Frage ein drittes Mal stellen (Schalter an). Im Verlauf sehen Sie 
 
 ## Schritt 3 – Eigene Fragen (25 min)
 
-**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Mit eingeschaltetem Schalter folgt der Assistent der Anleitung `anleitungen/kundenabfrage.md`. Dann ist jede Antwort gleich aufgebaut und jede Aussage hat eine Quelle. So können Sie der Antwort vertrauen, weil Sie sie in Sekunden prüfen können.
+**Worum geht es?** Im Alltag haben Sie konkrete Fragen: Was haben wir zugesagt? Wo droht Umsatz verloren zu gehen? Dafür gibt es die Anleitung `vorlagen/kundenabfrage.md`: Mit ihr ist jede Antwort gleich aufgebaut und jede Aussage hat eine Quelle. So können Sie der Antwort vertrauen, weil Sie sie in Sekunden prüfen können.
 
-**Beispiel für den Anfang** (im Assistenten, Schalter an):
+Kopieren Sie zuerst `vorlagen/kundenabfrage.md` nach `anleitungen/`. **Beispiel für den Anfang** (im Assistenten):
 
 ```text
 Welche Zusagen haben wir Wiesental Reisemobile gemacht, und welche sind noch offen?
 ```
 
-**Ideen:** Eigene Fragen stellen und eine Quelle öffnen, um sie zu prüfen. Dieselbe Frage auch einmal ohne Anleitung stellen. Die Anleitung per Codex erweitern („Am Ende immer eine Empfehlung für das nächste Gespräch“).
+**Ideen:** Eigene Fragen stellen und eine Quelle öffnen, um sie zu prüfen. Die Anleitung per Codex erweitern („Am Ende immer eine Empfehlung für das nächste Gespräch“).
 
 ---
 
 ## Schritt 4 – Nächste Schritte (40 min)
 
-**Worum geht es?** Die KI soll vorschlagen, um welche Kunden sich der Vertrieb zuerst kümmern sollte. Wie sie priorisiert, steht als einfache Punkteliste in `anleitungen/next-best-action.md`. Diese Logik gehört damit den Fachleuten, nicht der IT: Wer eine Zahl ändert oder eine neue Gesprächsnotiz anlegt, verändert die Empfehlungen.
+**Worum geht es?** Die KI soll vorschlagen, um welche Kunden sich der Vertrieb zuerst kümmern sollte. Wie sie priorisiert, steht als einfache Punkteliste in `vorlagen/next-best-action.md`. Diese Logik gehört damit den Fachleuten, nicht der IT: Wer eine Zahl ändert oder eine neue Gesprächsnotiz anlegt, verändert die Empfehlungen.
 
-**Beispiel für den Anfang:**
+Kopieren Sie zuerst `vorlagen/next-best-action.md` nach `anleitungen/`. **Beispiel für den Anfang:**
 
 ```text
 Baue oben in der App einen zweiten Reiter „Nächste Schritte“ mit einem Knopf „Aktualisieren“. Er nutzt die fertigen Empfehlungen des Servers und zeigt sie als Liste mit Priorität, Punkten, Kunde, Thema, Ansprechpartner, Begründung und Quellen.
@@ -124,7 +134,7 @@ Baue oben in der App einen zweiten Reiter „Nächste Schritte“ mit einem Knop
 
 **Danach selbst an der Logik drehen**, zum Beispiel:
 
-- Gewichtung ändern – im Abschnitt „Gewichtung – hier anpassen“ direkt in der Datei oder per Prompt („Ein Wettbewerbssignal zählt 40 statt 25 Punkte.“)
+- Gewichtung ändern – in `anleitungen/next-best-action.md` im Abschnitt „Gewichtung – hier anpassen“ direkt in der Datei oder per Prompt („Ein Wettbewerbssignal zählt 40 statt 25 Punkte.“)
 - Eine neue Gesprächsnotiz anlegen lassen:
 
   ```text

@@ -11,7 +11,8 @@ Die Teilnehmenden sind Führungskräfte, keine Programmierer. Sie steuern dich n
 - `kunden/` – eine Markdown-Datei pro Kunde (Stammdaten im Kopfbereich zwischen `---`)
 - `gespraeche/` – Gesprächsnotizen, eine Datei pro Kontakt, Dateiname `JJJJ-MM-TT_kundenid_thema.md`
 - `markt/` – Markt- und Wettbewerbsmeldungen
-- `anleitungen/` – Arbeitsanleitungen für die KI
+- `anleitungen/` – Arbeitsanleitungen, die die KI im Vertriebs-Assistenten befolgt. Am Anfang leer; die Nutzer kopieren im Workshop Dateien aus `vorlagen/` hinein.
+- `vorlagen/` – fertige Anleitungen zum Einfügen
 - `eingang/` – unsortierte Rohtexte, z. B. Diktate
 - `fallback/` – vorbereitete Beispielergebnisse, falls die KI nicht antwortet
 - `public/index.html` – die Oberfläche der App (HTML, CSS und JavaScript in einer Datei)
@@ -30,16 +31,24 @@ Alle Firmen, Personen, Zahlen und Meldungen sind **frei erfunden**. Es gibt kein
 - Auch keine Befehle ausführen, die diese Dateien verändern, ersetzen oder löschen (z. B. über Skripte, `git` oder `npm`).
 - Lesen und erklären ist erlaubt.
 
+## Fragen zu Kunden, Gesprächen und Markt
+
+Solche Fragen kommen aus dem Chat oder aus dem Vertriebs-Assistenten der App (dort startet der Server dich im Hintergrund).
+
+- Liegt in `anleitungen/` eine passende Anleitung, befolge sie.
+- Liegt dort keine passende Anleitung, antworte ohne. Nutze dafür nichts aus `vorlagen/` – sonst funktioniert der Vergleich ohne/mit Anleitung nicht.
+- Stichtag für alle Auswertungen ist der 16.09.2026 (darauf sind die Beispieldaten ausgelegt).
+- Antworte als gut lesbarer Text, außer der Prompt verlangt JSON. Nur die Antwort, keine Hinweise zu deinem Vorgehen.
+
 ## Arbeitsweise
 
 - Erkläre in einfachem Deutsch, was du tust und warum – ohne Fachjargon. Fachbegriffe kurz erklären.
-- Mache kleine, nachvollziehbare Änderungen und sage am Ende, welche Dateien du geändert hast.
+- Mache kleine, nachvollziehbare Änderungen und sage am Ende, welche Dateien du geändert hast (nur wenn du etwas geändert hast).
 - Lösche keine Dateien in `kunden/`, `gespraeche/`, `markt/`, `eingang/` und `fallback/`. Neue Dateien anlegen ist erlaubt.
 - Änderungen gehören nach `public/index.html` und `anleitungen/`; neue Notizen nach `gespraeche/`.
 - Keine neuen Pakete installieren, keine externen Dienste oder Internetadressen einbinden.
 - Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter). Erkläre stattdessen: in VS Code Menü „Terminal → Neues Terminal“, `npm run dev` eingeben, Enter, Fenster offen lassen, dann http://localhost:3000 im Browser öffnen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden (F5).
-- Richte dich nach einer Datei in `anleitungen/` nur, wenn der Prompt sie nennt oder du das Antwortformat einer Schnittstelle (siehe unten) brauchst.
-- Bittet ein Prompt um ein Ergebnis „ohne Anleitung“, öffne keine Datei in `anleitungen/`. Weise darauf hin, dass der faire Vergleich im Vertriebs-Assistenten der App läuft (Schalter „Anleitung verwenden“ aus).
+- Kopiere Dateien aus `vorlagen/` nach `anleitungen/` nur, wenn der Prompt darum bittet. Der Vergleich ohne/mit Anleitung hängt davon ab, dass `anleitungen/` bis dahin leer bleibt.
 - Alle Texte für die Nutzer auf Deutsch.
 
 ## Schnittstellen des Servers
@@ -50,13 +59,13 @@ Der Server ist fertig und gesperrt (siehe oben). Neue Funktionen der App entsteh
 |---|---|---|---|
 | Kundenliste | `GET /api/kunden` | – | Liste aller Kunden: Felder aus dem Kopfbereich plus `datei` |
 | Daten eines Kunden | `GET /api/kunden/:id` | – | `{ kunde, gespraeche }` – jeweils Kopfdaten plus `datei` und `inhalt` (ganzer Dateitext); `gespraeche` neueste zuerst |
-| Vertriebs-Assistent / Frage-Funktion | `POST /api/agent/frage` | `{ frage, anleitung }`, `anleitung` ist `true` oder `false` | KI-Antwort als Text. Bei `true` folgt die KI der passenden Datei in `anleitungen/`. Bei `false` sieht sie nur `kunden/`, `gespraeche/` und `markt/` in einem leeren Ordner. |
-| Empfehlungen / Nächste Schritte | `POST /api/agent/next-best-action` | `{}` | KI-Empfehlungen für alle Kunden |
+| Vertriebs-Assistent / Frage-Funktion | `POST /api/agent/frage` | `{ frage }` | KI-Antwort als Text. Die Frage geht unverändert an die KI, die im Projektordner läuft. |
+| Empfehlungen / Nächste Schritte | `POST /api/agent/next-best-action` | `{}` | KI-Empfehlungen für alle Kunden; braucht `anleitungen/next-best-action.md` |
 
 Alle `POST /api/agent/...` antworten mit:
 
 - `text` – die Antwort der KI als Text
-- `json` – nur bei den Empfehlungen: die Liste als Daten (Format im Abschnitt „Ausgabeformat“ von `anleitungen/next-best-action.md`), sonst `null`
+- `json` – nur bei den Empfehlungen: die Liste als Daten (Format im Abschnitt „Ausgabeformat“ von `next-best-action.md` in `anleitungen/` bzw. `vorlagen/`), sonst `null`
 - `fallback` – `true`, wenn die KI nicht erreichbar war und ein vorbereitetes Beispiel aus `fallback/` kommt; der Grund steht dann in `grund`
 - `sekunden` – Dauer des KI-Aufrufs
 

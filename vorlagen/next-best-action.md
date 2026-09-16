@@ -14,7 +14,7 @@ Bewerte **jeden** Kunden in `kunden/` mit Punkten und schlage für jeden Kunden 
 2. `gespraeche/` – alle Notizen, neueste zuerst. Der letzte Kontakt ist die neueste Notiz des Kunden.
 3. `markt/` – Meldungen, deren `branchen` zur Branche des Kunden passen oder die den Kunden nennen.
 
-Stichtag ist das Datum aus der Anfrage, sonst das heutige Datum.
+Stichtag ist der 16.09.2026.
 
 ## Gewichtung – hier anpassen
 

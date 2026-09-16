@@ -2,7 +2,7 @@
 
 ## Wofür ist diese Datei?
 
-Diese Datei legt fest, wie die KI eine Kundenübersicht schreibt: welche Abschnitte es gibt, in welcher Reihenfolge, woher die Informationen kommen und in welchem Format das Ergebnis zurückkommt. Die KI nutzt sie im Vertriebs-Assistenten der App, wenn nach einer Übersicht oder Zusammenfassung zu einem Kunden gefragt wird und „Anleitung verwenden“ eingeschaltet ist. Wer hier etwas ändert – zum Beispiel einen Abschnitt ergänzt –, ändert das Ergebnis in der App, ganz ohne Programmierung.
+Diese Datei legt fest, wie die KI eine Kundenübersicht schreibt: welche Abschnitte es gibt, in welcher Reihenfolge, woher die Informationen kommen und in welchem Format das Ergebnis zurückkommt. Die KI nutzt sie im Vertriebs-Assistenten der App, wenn nach einer Übersicht oder Zusammenfassung zu einem Kunden gefragt wird, sobald diese Datei im Ordner `anleitungen/` liegt. Wer hier etwas ändert – zum Beispiel einen Abschnitt ergänzt –, ändert das Ergebnis in der App, ganz ohne Programmierung.
 
 ## Aufgabe
 
@@ -19,8 +19,8 @@ Erstelle für genau einen Kunden eine strukturierte Übersicht. Die Frage nennt 
 - Jede Aussage bekommt ihre Quelle: den Dateipfad, z. B. `gespraeche/2026-07-02_k01_farbabweichung.md`.
 - Nichts erfinden, nichts schätzen. Fehlt eine Information, schreibe „keine Information“.
 - Widersprechen sich Quellen, gilt die neueste Gesprächsnotiz. Den Widerspruch unter „Offene Punkte & Risiken“ nennen.
-- Stichtag ist das Datum aus der Anfrage. Fehlt es, nimm das heutige Datum.
-- Kurz und sachlich: Stichpunkte, höchstens 5 Punkte pro Abschnitt, Zahlen mit Einheit.
+- Stichtag ist der 16.09.2026.
+- Kurz und sachlich: Stichpunkte, höchstens 3 Punkte pro Abschnitt, je ein kurzer Satz, Zahlen mit Einheit.
 - Sprache: Deutsch.
 
 ## Abschnitte – genau diese, in dieser Reihenfolge
