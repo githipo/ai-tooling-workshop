@@ -4,7 +4,7 @@
 
 Dies ist ein Übungs-Repository für einen KI-Workshop. Es enthält eine kleine Web-App („Kundencockpit“) und Beispieldaten eines Herstellers von faserverstärkten Kunststoffplatten (GFK), der an Fahrzeug-, Paneel- und Bauunternehmen liefert.
 
-Die Teilnehmenden sind Führungskräfte, keine Programmierer. Sie steuern dich nur über Prompts.
+Die Teilnehmenden sind Führungskräfte, keine Programmierer. Sie steuern dich nur über Prompts. Einige kennen Codex, aber niemand hat bisher mit einem lokalen Webserver gearbeitet – Begriffe wie Terminal, Server oder `localhost` bei Bedarf in einem Satz erklären.
 
 ## Ordner
 
@@ -37,21 +37,22 @@ Alle Firmen, Personen, Zahlen und Meldungen sind **frei erfunden**. Es gibt kein
 - Lösche keine Dateien in `kunden/`, `gespraeche/`, `markt/`, `eingang/` und `fallback/`. Neue Dateien anlegen ist erlaubt.
 - Änderungen gehören nach `public/index.html` und `anleitungen/`; neue Notizen nach `gespraeche/`.
 - Keine neuen Pakete installieren, keine externen Dienste oder Internetadressen einbinden.
-- Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter), sondern bitte die Nutzer, ihn im Terminal auszuführen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden.
+- Die App läuft mit `npm run dev` unter http://localhost:3000. Starte sie nicht selbst (der Befehl läuft dauerhaft weiter). Erkläre stattdessen: in VS Code Menü „Terminal → Neues Terminal“, `npm run dev` eingeben, Enter, Fenster offen lassen, dann http://localhost:3000 im Browser öffnen. Nach Änderungen an `public/index.html` reicht es, die Seite im Browser neu zu laden (F5).
 - Richte dich nach einer Datei in `anleitungen/` nur, wenn der Prompt sie nennt oder du das Antwortformat einer Schnittstelle (siehe unten) brauchst.
+- Bittet ein Prompt um ein Ergebnis „ohne Anleitung“, öffne keine Datei in `anleitungen/`. Weise darauf hin, dass der faire Vergleich über den Knopf „Zusammenfassung ohne Anleitung“ in der App läuft.
 - Alle Texte für die Nutzer auf Deutsch.
 
 ## Schnittstellen des Servers
 
-Der Server ist fertig und gesperrt (siehe oben). Neue Funktionen der App entstehen in `public/index.html` und nutzen diese Adressen:
+Der Server ist fertig und gesperrt (siehe oben). Neue Funktionen der App entstehen in `public/index.html` und nutzen diese Adressen. Die Teilnehmenden nennen die Funktionen in Alltagssprache (Spalte „Gemeint ist“), nicht mit ihrer Adresse.
 
-| Aufruf | Schickt | Liefert |
-|---|---|---|
-| `GET /api/kunden` | – | Liste aller Kunden: Felder aus dem Kopfbereich plus `datei` |
-| `GET /api/kunden/:id` | – | `{ kunde, gespraeche }` – jeweils Kopfdaten plus `datei` und `inhalt` (ganzer Dateitext); `gespraeche` neueste zuerst |
-| `POST /api/agent/uebersicht` | `{ kundeId, modus }`, `modus` ist `"ohne"` oder `"mit"` | KI-Zusammenfassung eines Kunden |
-| `POST /api/agent/frage` | `{ kundeId, frage }` | KI-Antwort auf eine freie Frage |
-| `POST /api/agent/next-best-action` | `{}` | KI-Empfehlungen für alle Kunden |
+| Gemeint ist | Aufruf | Schickt | Liefert |
+|---|---|---|---|
+| Kundenliste | `GET /api/kunden` | – | Liste aller Kunden: Felder aus dem Kopfbereich plus `datei` |
+| Daten eines Kunden | `GET /api/kunden/:id` | – | `{ kunde, gespraeche }` – jeweils Kopfdaten plus `datei` und `inhalt` (ganzer Dateitext); `gespraeche` neueste zuerst |
+| KI-Zusammenfassung ohne / mit Anleitung | `POST /api/agent/uebersicht` | `{ kundeId, modus }`, `modus` ist `"ohne"` oder `"mit"` | KI-Zusammenfassung eines Kunden. Bei `"ohne"` sieht die KI nur die Dateien dieses Kunden in einem leeren Ordner. |
+| Frage-Funktion | `POST /api/agent/frage` | `{ kundeId, frage }` | KI-Antwort auf eine freie Frage nach `anleitungen/kundenabfrage.md` |
+| Empfehlungen / Nächste Schritte | `POST /api/agent/next-best-action` | `{}` | KI-Empfehlungen für alle Kunden |
 
 Alle `POST /api/agent/...` antworten mit:
 

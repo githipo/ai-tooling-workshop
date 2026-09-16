@@ -235,7 +235,7 @@ app.post('/api/agent/uebersicht', async (req, res) => {
       fs.copyFileSync(path.join(__dirname, d.datei), path.join(ordner, path.basename(d.datei)));
     }
     const ergebnis = await runAgent({
-      prompt: 'Fasse die Informationen zu diesem Kunden zusammen.',
+      prompt: 'Fasse die Informationen zu diesem Kunden zusammen. Nutze nur die Dateien in diesem Ordner.',
       cwd: ordner,
       titel: `Übersicht OHNE Anleitung – ${kunde.name}`,
     });
