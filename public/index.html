@@ -182,6 +182,34 @@
   .eintrag .laden { color: var(--text-leise); font-style: italic; }
   .eintrag .dauer { font-size: 12px; color: var(--text-leise); margin-top: 4px; }
   .beispiel-hinweis { background: #fff4d6; border: 1px solid var(--gold); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 14px; }
+
+  /* ---------- Reiter oben ---------- */
+  .reiter { display: flex; gap: 6px; margin-top: 10px; }
+  .reiter button { background: rgba(255, 255, 255, .18); color: #fff; border-radius: 8px 8px 0 0; }
+  .reiter button:hover { background: rgba(255, 255, 255, .32); }
+  .reiter button.aktiv { background: var(--hintergrund); color: var(--akzent-dunkel); }
+
+  /* ---------- Nächste Schritte ---------- */
+  .schritte { padding: 24px 32px; max-width: 1100px; }
+  .schritte-kopf { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .schritte-kopf h2 { margin: 0; font-size: 24px; flex: 1; }
+  .schritte-kopf .laden { color: var(--text-leise); font-style: italic; }
+  .empfehlung { display: flex; gap: 16px; border-left: 6px solid var(--klasse-c); }
+  .empfehlung.prio-hoch { border-left-color: var(--rot); }
+  .empfehlung.prio-mittel { border-left-color: var(--klasse-b); }
+  .empfehlung .rang { font-size: 22px; font-weight: 700; color: var(--text-leise); min-width: 32px; }
+  .empfehlung .inhalt { flex: 1; min-width: 0; }
+  .empfehlung .zeile1 { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+  .empfehlung .kundenname { font-size: 18px; font-weight: 700; }
+  .prio { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 12px; color: #fff; background: var(--klasse-c); text-transform: uppercase; }
+  .prio-hoch .prio { background: var(--rot); }
+  .prio-mittel .prio { background: var(--klasse-b); }
+  .punkte { font-weight: 700; color: var(--akzent-dunkel); background: var(--akzent-hell); padding: 3px 10px; border-radius: 12px; font-size: 13px; }
+  .empfehlung .thema-text { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .empfehlung .feld { margin-top: 4px; line-height: 1.45; }
+  .empfehlung .feld-name { color: var(--text-leise); font-size: 13px; }
+  .quellen { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .quellen span { font-size: 12px; background: var(--hintergrund); border: 1px solid var(--rand); border-radius: 6px; padding: 2px 8px; font-family: Consolas, monospace; }
 </style>
 </head>
 <body>
@@ -189,9 +217,24 @@
 <header>
   <h1>Kundencockpit</h1>
   <p>Kunden, Ansprechpartner und Gespräche auf einen Blick</p>
+  <nav class="reiter">
+    <button class="aktiv" data-reiter="ansicht-kunden">👥 Kunden</button>
+    <button data-reiter="ansicht-schritte">🎯 Nächste Schritte</button>
+  </nav>
 </header>
 
-<div class="ansicht">
+<section id="ansicht-schritte" class="schritte" hidden>
+  <div class="schritte-kopf">
+    <h2>🎯 Nächste Schritte</h2>
+    <span id="schritte-status" class="laden"></span>
+    <button id="aktualisieren-knopf">Aktualisieren</button>
+  </div>
+  <div id="schritte-liste">
+    <p class="platzhalter">Klicken Sie auf „Aktualisieren“, um Empfehlungen für alle Kunden zu erhalten.<br>Das dauert meist 30 Sekunden bis 3 Minuten.</p>
+  </div>
+</section>
+
+<div class="ansicht" id="ansicht-kunden">
   <aside>
     <h2>Kunden</h2>
     <input id="suche" type="search" placeholder="Kunde suchen …">
@@ -498,6 +541,82 @@ document.getElementById('frage').onkeydown = (ereignis) => {
   if (ereignis.key === 'Enter' && !ereignis.shiftKey) {
     ereignis.preventDefault();
     document.getElementById('frage-formular').requestSubmit();
+  }
+};
+
+// ---------- Reiter umschalten ----------
+
+document.querySelectorAll('.reiter button').forEach((knopf) => {
+  knopf.onclick = () => {
+    document.querySelectorAll('.reiter button').forEach((k) => {
+      k.classList.toggle('aktiv', k === knopf);
+      document.getElementById(k.dataset.reiter).hidden = k !== knopf;
+    });
+  };
+});
+
+// ---------- Nächste Schritte ----------
+
+// Felder, die besonders dargestellt werden. Alle weiteren Felder aus der Antwort werden darunter einfach mit angezeigt.
+const BEKANNTE_FELDER = ['kunde', 'ansprechpartner', 'thema', 'prioritaet', 'punkte', 'begruendung', 'quellen'];
+
+function zeichneEmpfehlung(e, nr) {
+  const prio = String(e.prioritaet ?? '').toLowerCase();
+  const weitere = Object.keys(e).filter((f) => !BEKANNTE_FELDER.includes(f));
+  const feld = (name, wert) => `<div class="feld"><span class="feld-name">${esc(name)}:</span> ${esc(wert)}</div>`;
+  return `
+    <div class="karte empfehlung prio-${esc(prio)}">
+      <div class="rang">${nr}</div>
+      <div class="inhalt">
+        <div class="zeile1">
+          <span class="kundenname">${esc(e.kunde || 'unbekannter Kunde')}</span>
+          ${e.prioritaet ? `<span class="prio">Priorität ${esc(e.prioritaet)}</span>` : ''}
+          ${e.punkte != null ? `<span class="punkte">${esc(e.punkte)} Punkte</span>` : ''}
+        </div>
+        ${e.thema ? `<div class="thema-text">${esc(e.thema)}</div>` : ''}
+        ${e.ansprechpartner ? feld('👤 Ansprechpartner', e.ansprechpartner) : ''}
+        ${e.begruendung ? feld('💡 Begründung', e.begruendung) : ''}
+        ${weitere.map((f) => feld(f, typeof e[f] === 'object' ? JSON.stringify(e[f]) : e[f])).join('')}
+        ${liste(e.quellen).length ? `
+          <div class="feld"><span class="feld-name">📄 Quellen:</span>
+            <div class="quellen">${liste(e.quellen).map((q) => `<span>${esc(q)}</span>`).join('')}</div>
+          </div>` : ''}
+      </div>
+    </div>`;
+}
+
+document.getElementById('aktualisieren-knopf').onclick = async () => {
+  const knopf = document.getElementById('aktualisieren-knopf');
+  const status = document.getElementById('schritte-status');
+  const bereich = document.getElementById('schritte-liste');
+  if (knopf.disabled) return;
+
+  // Knopf sperren und Sekunden mitzählen
+  knopf.disabled = true;
+  knopf.textContent = 'Bitte warten …';
+  const start = Date.now();
+  const zaehle = () => { status.textContent = `⏳ Die KI erstellt Empfehlungen … ${Math.round((Date.now() - start) / 1000)} Sekunden`; };
+  zaehle();
+  const uhr = setInterval(zaehle, 1000);
+
+  try {
+    const antwort = await api('/api/agent/next-best-action', {});
+    const eintraege = Array.isArray(antwort.json) ? antwort.json : [];
+    bereich.innerHTML = `
+      ${antwort.fallback ? `<div class="beispiel-hinweis">⚠️ <strong>Beispielergebnis – KI nicht erreichbar.</strong> ${esc(antwort.grund)}</div>` : ''}
+      ${eintraege.length
+        ? eintraege.map((e, i) => zeichneEmpfehlung(e, i + 1)).join('')
+        : `<div class="karte fliesstext">${markdown(antwort.text) || '<p class="leer">Keine Empfehlungen erhalten.</p>'}</div>`}`;
+    status.textContent = antwort.sekunden != null
+      ? `✅ ${eintraege.length} Empfehlungen · erstellt in ${Math.round(antwort.sekunden)} Sekunden`
+      : '';
+  } catch (fehler) {
+    bereich.innerHTML = `<p class="fehler">Das hat leider nicht geklappt: ${esc(fehler.message)}</p>`;
+    status.textContent = '';
+  } finally {
+    clearInterval(uhr);
+    knopf.disabled = false;
+    knopf.textContent = 'Aktualisieren';
   }
 };
 
