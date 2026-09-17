@@ -4,9 +4,13 @@ name: Wiesental Reisemobile GmbH
 land: Deutschland
 branche: Caravan & Reisemobil
 kundenklasse: A
+mitarbeiter: 420
+share_of_wallet: ca. 55 %
 betreuungsziel:
   kontakt_alle_tage: 14
   besuch_alle_tage: 60
+  reaktion_in_tagen: 1
+  angebot_in_tagen: 3
 aussendienst: Markus Feldmann
 anwendungstechniker: Timo Brandl
 ansprechpartner:

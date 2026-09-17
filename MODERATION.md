@@ -33,13 +33,14 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 - **Vorführfrage:** „Fasse Lahntal Caravanwerk zusammen.“ Für diese Frage gibt es Beispielantworten, ohne und mit Anleitung.
 - **Achtung:** Wer eine Vorlage zu früh einfügt, hat keinen Vergleich mehr. Dann die Datei aus `anleitungen/` wieder löschen.
 - **Ohne Anleitung:** keine feste Gliederung, meist keine Quellen, Marktmeldungen nur zufällig.
-- **Mit Anleitung:** sieben feste Abschnitte mit Quellen, dazu ein Steckbrief. Der letzte Besuch liegt 182 Tage zurück, das Besuchsziel ist um 122 Tage überschritten.
-- **Nach dem Nachhaltigkeits-Prompt** hat die Antwort acht Abschnitte, ohne dass jemand programmiert hat.
+- **Mit Anleitung:** vier feste Abschnitte mit Quellen, der erste ist ein Steckbrief. Der letzte Besuch liegt 182 Tage zurück, das Besuchsziel ist um 122 Tage überschritten.
+- **Die Vorlagen sind bewusst knapp.** Wettbewerb, Chancen oder Beziehung fehlen – das ergänzen die Teilnehmenden selbst.
+- **Nach dem Nachhaltigkeits-Prompt** hat die Antwort fünf Abschnitte, ohne dass jemand programmiert hat.
 
 **Schritt 3:**
 
 - Zuerst `vorlagen/kundenabfrage.md` nach `anleitungen/` kopieren.
-- Die Antworten folgen dann dem Aufbau Kurzantwort, Kommerziell, Wettbewerb, Technisch, Offen, jeweils mit Quellen.
+- Die Antworten folgen dann dem Aufbau Kurzantwort, Details, Offen / unklar – die Details jeweils mit Quellen.
 - **Die KI wählt die Anleitung selbst.** Der Server sagt ihr nur: „Gibt es unter anleitungen/ eine passende Anleitung, befolge sie.“ Bei einer Zusammenfassung nimmt sie `kunden-uebersicht.md`, bei einer Frage `kundenabfrage.md`.
 
 **Schritt 4:**
@@ -47,7 +48,8 @@ Die Teilnehmenden arbeiten mit der [README.md](README.md). Dort steht pro Schrit
 - Zuerst `vorlagen/next-best-action.md` nach `anleitungen/` kopieren. Ohne diese Datei zeigt „Aktualisieren“ nur das Beispielergebnis.
 - Die Beispieldaten sind so gebaut, dass sich die Reihenfolge sichtbar ändert:
   - **Wettbewerbssignal 25 → 40:** Kessler & Voigt steigt von Platz 3 auf Platz 2.
-  - **Notiz zu Odra Panele:** Der C-Kunde steigt von „mittel“ auf „hoch“.
+  - **Notiz zu Odra Panele:** Der C-Kunde steigt von „mittel“ (40 Punkte) auf „hoch“ (50 Punkte, mit Wettbewerbssignal 40 sogar 65).
+  - **Bewusst nicht in der Punkteliste:** Marktmeldungen, Potenzialkunden ohne Umsatz, Angebots- und Reaktionszeiten je Klasse (`reaktion_in_tagen`, `angebot_in_tagen` in `kunden/`). Gute Ideen für eigene Kriterien.
 - Jede erfolgreiche Aktualisierung überschreibt `fallback/next-best-action.json`. So bleibt das Beispiel aktuell.
 
 **Schritt 5:**
@@ -172,7 +174,7 @@ Die Codex-Optionen:
 
 **Vor dem Workshop einmal mit Codex prüfen:** `npm run check` muss als Antwort nur „OK“ zeigen. Codex schreibt die fertige Antwort in die Ausgabe und Fortschrittsmeldungen separat. Ohne Codex-Login ließ sich das bisher nicht testen.
 
-Stichtag für „überfällig“ ist der 16.09.2026. Er steht in `AGENTS.md` und in den Vorlagen.
+Stichtag für „überfällig“ ist der 16.09.2026. Er steht in `AGENTS.md`.
 
 Für schnellere Antworten (die KI denkt weniger lange nach):
 

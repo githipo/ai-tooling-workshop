@@ -2,11 +2,15 @@
 id: k04
 name: Kessler & Voigt Aufbauten GmbH
 land: Deutschland
-branche: LKW-Aufbauten
+branche: Nutzfahrzeuge
 kundenklasse: B
+mitarbeiter: 85
+share_of_wallet: ca. 90 %
 betreuungsziel:
   kontakt_alle_tage: 30
   besuch_alle_tage: 90
+  reaktion_in_tagen: 2
+  angebot_in_tagen: 5
 aussendienst: Katrin Albers
 anwendungstechniker: Dr. Sabine Wolter
 ansprechpartner:
@@ -17,7 +21,7 @@ ansprechpartner:
 aktuelle_anwendungen:
   - Seitenwände Kofferaufbauten (GFK glatt, 1,8 mm)
 potenzial_anwendungen:
-  - Dachplatten
+  - Dachplatten (auch transluzent)
   - Bodenplatten für Wechselbrücken
 ---
 

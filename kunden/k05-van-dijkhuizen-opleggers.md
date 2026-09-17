@@ -2,12 +2,16 @@
 id: k05
 name: Van Dijkhuizen Opleggers B.V.
 land: Niederlande
-branche: Trailer
+branche: Nutzfahrzeuge
 kundenklasse: B
+mitarbeiter: 120
+share_of_wallet: ca. 80 %
 betreuungsziel:
   kontakt_alle_tage: 30
   besuch_alle_tage: 90
-aussendienst: Stefan Lorenz
+  reaktion_in_tagen: 2
+  angebot_in_tagen: 5
+aussendienst: Jeroen Visser (Handelsvertreter Benelux)
 anwendungstechniker: Timo Brandl
 ansprechpartner:
   - name: Pieter van Dijkhuizen

@@ -2,11 +2,15 @@
 id: k07
 name: Odra Panele Sp. z o.o.
 land: Polen
-branche: Sandwichpaneele
+branche: Sandwichpaneele & Kühlzellen
 kundenklasse: C
+mitarbeiter: 140
+share_of_wallet: ca. 60 %
 betreuungsziel:
   kontakt_alle_tage: 60
   besuch_alle_tage: 180
+  reaktion_in_tagen: 3
+  angebot_in_tagen: 10
 aussendienst: Stefan Lorenz
 anwendungstechniker: Timo Brandl
 ansprechpartner:

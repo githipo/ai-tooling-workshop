@@ -14,3 +14,4 @@ Besuch bei Hr. Kessler (GF), Fr. Brandt kam später dazu. KA
 4) Zahlung: Skonto wird immer gezogen, alles ok
 
 Zugesagt: wir prüfen intern und melden uns bis Ende Juli (Preis + evtl. Mengenstaffel / längere Laufzeit)
+Mehr als 4% Nachlass kann ich nicht selbst freigeben -> Gruppenleiter, darüber Vertriebsleitung

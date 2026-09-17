@@ -18,7 +18,7 @@ Heute steuern Sie einen KI-Agenten (**Codex**) nur mit Ihren eigenen Worten. Cod
 | `gespraeche/` | Gesprächsnotizen, eine Datei pro Kontakt |
 | `markt/` | Markt- und Wettbewerbsmeldungen |
 | `anleitungen/` | **Anleitungen für die KI** – hier steht, *wie* gearbeitet wird. Am Anfang leer, Sie füllen ihn im Workshop. |
-| `vorlagen/` | fertige Anleitungen zum Einfügen |
+| `vorlagen/` | kurze Anleitungen zum Einfügen – bewusst knapp, Sie bauen sie im Workshop aus |
 | `eingang/` | ein unbearbeitetes Diktat |
 | `AGENTS.md` | Hintergrundwissen für Codex; liest er bei jedem Chat automatisch |
 
@@ -35,6 +35,8 @@ Heute steuern Sie einen KI-Agenten (**Codex**) nur mit Ihren eigenen Worten. Cod
 ```text
 Erkläre mir dieses Projekt in einfachen Worten.
 ```
+
+**Experimentieren:** Fragen Sie weiter, bis die Erklärung für Sie passt – etwa kürzer oder an einem Beispielkunden.
 
 ---
 
@@ -72,6 +74,8 @@ Baue einen Vertriebs-Assistenten: ein Eingabefeld, das die fertige Frage-Funktio
 
 Dann eine erste Frage stellen, z. B. „Welche Kunden haben wir?“. Eine Antwort dauert 30 Sekunden bis 2 Minuten. Klappt etwas nicht, beschreiben Sie Codex, was Sie sehen („Beim Klick passiert nichts“).
 
+**Experimentieren:** Versuchen Sie, die App noch mehr nach Ihren Wünschen zu optimieren – etwa Farben, Anordnung oder Bedienung. Beschreiben Sie Codex einfach, was Sie anders haben möchten.
+
 ---
 
 ## Schritt 2 – Ohne und mit Anleitung (35 min)
@@ -98,6 +102,8 @@ Ergänze in der Anleitung kunden-uebersicht einen Abschnitt „Nachhaltigkeit“
 
 Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf stehen jetzt drei Antworten untereinander.
 
+**Experimentieren:** Versuchen Sie, die Anleitung noch mehr nach Ihren Wünschen zu optimieren – etwa Länge oder Abschnitte – und stellen Sie danach die Frage erneut.
+
 ---
 
 ☕ **Pause (10 min)**
@@ -116,7 +122,7 @@ Dann dieselbe Frage ein drittes Mal stellen. Im Verlauf stehen jetzt drei Antwor
 Was haben wir Wiesental Reisemobile zugesagt?
 ```
 
-Passt Ihnen der Aufbau der Antworten nicht, ändern Sie die Anleitung per Codex – z. B. „Am Ende immer eine Empfehlung für das nächste Gespräch“.
+**Experimentieren:** Versuchen Sie, den Aufbau der Antworten noch mehr nach Ihren Wünschen zu optimieren – lassen Sie Codex dafür die Anleitung `kundenabfrage` ändern, etwa mit einer Empfehlung für das nächste Gespräch am Ende.
 
 ---
 
@@ -146,6 +152,8 @@ Baue einen zweiten Reiter „Nächste Schritte“, der die fertigen Empfehlungen
   ```text
   Lege eine Gesprächsnotiz an: Heute Telefonat mit Tomasz Wójcik von Odra Panele. Die zweite Paneel-Linie ist beschlossen, Start April 2027. Sie brauchen in 10 Tagen ein Angebot für ca. 63.000 m² pro Jahr. Ein anderer Anbieter aus Polen hat bereits ein Angebot abgegeben.
   ```
+
+**Experimentieren:** Versuchen Sie, Punkteliste und Reiter noch mehr nach Ihren Wünschen zu optimieren – etwa mit eigenen Kriterien oder Farben je Priorität.
 
 ---
 

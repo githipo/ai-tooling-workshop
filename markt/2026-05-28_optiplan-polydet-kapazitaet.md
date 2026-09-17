@@ -1,7 +1,7 @@
 ---
 datum: 2026-05-28
 titel: OPTIPLAN/POLYDET erweitert Kapazität für Kühlfahrzeug-Deckschichten
-branchen: Kühlfahrzeuge & Trailer, Sandwichpaneele
+branchen: Nutzfahrzeuge, Sandwichpaneele & Kühlzellen
 quelle: SYNTHETISCH – frei erfundene Meldung für den Workshop
 ---
 
